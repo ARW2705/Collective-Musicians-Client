@@ -5,7 +5,7 @@ import './Header.css'
 
 function Header() {
   return (
-    <header id='header'>
+    <header id='app-header'>
       Test Header
     </header>
   )
