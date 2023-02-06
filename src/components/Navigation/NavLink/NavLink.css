@@ -1,0 +1,18 @@
+.nav-link a {
+  color: var(--primary-dark);
+  padding: 0 10px;
+  font-size: var(--large-font-size);
+}
+
+.nav-link a:visited {
+  color: var(--primary-dark);
+}
+
+.nav-link a:hover {
+  color: var(--primary-light);
+  text-decoration: underline;
+}
+
+.nav-link a.active {
+  color: var(--primary-light);
+}
