@@ -1,0 +1,20 @@
+:root {
+  --primary: #C34F5A;
+  --primary-light: #F8D4BA;
+  --primary-dark: #541412;
+
+  --secondary: #D69F3A;
+
+  --danger: red;
+  --warning: yellow;
+
+  --light: #E0E0E0;
+  --dark: #212121;
+
+  --gray-light: #9E9E9E;
+  --gray: #616161;
+  --gray-dark: #424242;
+
+
+  --background-color: var(--light);
+}
