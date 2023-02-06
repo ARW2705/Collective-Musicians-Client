@@ -3,7 +3,9 @@ import { Route, Routes } from 'react-router-dom'
 
 import Home from '../../pages/Home/Home'
 
-function AppRoutes() {
+import './AppRoutes.css'
+
+function AppRoutes(): JSX.Element {
   return (
     <Routes>
       <Route path='/' element={ <Home /> } />
