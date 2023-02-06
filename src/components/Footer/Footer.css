@@ -1,3 +1,4 @@
 #app-footer {
   height: var(--footer-height);
+  background-color: var(--gray-dark);
 }
