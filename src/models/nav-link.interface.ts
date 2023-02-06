@@ -1,6 +1,7 @@
-export interface NavLink {
+import { ComponentAttributes } from './component-attrs.interface'
+
+export interface NavLink extends ComponentAttributes {
   title: string;
   route?: string;
-  customClass?: string;
   icon?: JSX.Element;
 }
