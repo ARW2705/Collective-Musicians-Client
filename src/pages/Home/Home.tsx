@@ -6,7 +6,7 @@ import Image from '../../components/Image/Image'
 import './Home.css'
 
 
-function Home(): JSX.Element {
+function HomePage(): JSX.Element {
   const bannerMessage = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu vitae elementum curabitur vitae nunc sed velit dignissim sodales. Velit ut tortor pretium viverra'
   
   return (
@@ -25,4 +25,4 @@ function Home(): JSX.Element {
 }
 
 
-export default Home
+export default HomePage
