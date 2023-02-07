@@ -8,9 +8,7 @@ import './Header.css'
 
 function Header() {
   const links: NavLink[] = [
-    { title: 'Organizations' },
-    { title: 'Venues'        },
-    { title: 'Philanthropy'  }
+    { title: 'Query' }
   ]
 
   return (
