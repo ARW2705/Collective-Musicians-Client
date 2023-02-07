@@ -1,4 +1,4 @@
-import { ComponentAttributes } from './component-attrs.interface';
+import { ComponentAttributes } from '@models/component-attrs'
 
 export interface ImageMetadata extends ComponentAttributes {
   src: string

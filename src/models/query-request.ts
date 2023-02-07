@@ -1,5 +1,5 @@
-import { QueryFilter } from './query-filter.interface'
-import { QueryParams } from './query-params.interface'
+import { QueryFilter } from '@models/query-filter'
+import { QueryParams } from '@models/query-params'
 
 export interface QueryRequest {
   url: string,

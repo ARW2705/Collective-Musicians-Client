@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink as RouterNavLink } from 'react-router-dom'
 
-import { NavLink } from '../../../models/interfaces'
+import { NavLink } from '@models/nav-link'
 
 import './NavLink.css'
 
