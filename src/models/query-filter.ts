@@ -1,4 +1,4 @@
-import { QueryCondition } from '@models/query-condition'
+import { QueryCondition } from './query-condition'
 
 export interface QueryFilter {
   filter: {

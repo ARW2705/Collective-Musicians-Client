@@ -1,8 +1,6 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
-import { QueryRequest } from '@models/query-request'
-import { QueryParams } from '@models/query-params'
-import { QueryFilter } from '@models/query-filter'
+import { QueryRequest, QueryParams, QueryFilter } from '../models/interfaces'
 
 import intercept from './interceptors/intercept'
 
@@ -19,12 +17,12 @@ async function request(config: QueryRequest): Promise<{[key: string]: any}> {
   return (await axios(requestConfig)).data
 }
 
-async function get(url: string, params: QueryParams): Promise<{[key: string]: any}> {
-  return await request({ url, params, method: 'GET' })
+async function get<T>(url: string, params: QueryParams = {}): Promise<T> {
+  return (await request({ url, params, method: 'GET' })) as T
 }
 
-async function query(url: string, params: QueryParams, data: QueryFilter) {
-  return await request({ url, params, data, method: 'POST'})
+async function query<T>(url: string, params: QueryParams = {}, data: QueryFilter): Promise<T> {
+  return await request({ url, params, data, method: 'POST'}) as T
 }
 
 

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { NavLink } from '@models/nav-link'
+import { NavLink } from '../../models/interfaces'
 import NavbarComponent from '../Navigation/Navbar/Navbar'
 
 import './Header.css'

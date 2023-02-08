@@ -18,15 +18,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
-    "paths": {
-      "@models/*": ["./src/models/*"],
-      "@components/*": ["./src/components/*"],
-      "@pages/*": ["./src/pages/*"],
-      "@routing/*": ["./src/routing/*"],
-      "@state/*": ["./src/state/*"],
-      "@http": ["./src/http/client"]
-    }
+    "jsx": "preserve"
   },
   "include": [
     "src"

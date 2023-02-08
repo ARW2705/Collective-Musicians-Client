@@ -1,4 +1,4 @@
-import { QueryConditionOptions } from '@models/query-condition-options'
+import { QueryConditionOptions } from './query-condition-options'
 
 export interface QueryCondition {
   [key: string]: {

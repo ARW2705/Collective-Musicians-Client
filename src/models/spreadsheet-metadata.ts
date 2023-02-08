@@ -1,4 +1,4 @@
-import { SheetMetadata } from '@models/sheet-metadata'
+import { SheetMetadata } from './sheet-metadata'
 
 export interface SpreadsheetMetadata {
   id: string | null

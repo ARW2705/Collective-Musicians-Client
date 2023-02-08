@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ImageMetadata } from '@models/image-metadata'
+import { ImageMetadata } from '../../models/interfaces'
 
 import './Image.css'
 
