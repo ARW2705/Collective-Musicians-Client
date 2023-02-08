@@ -1,9 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider as ReduxProvider } from 'react-redux'
 
 import reportWebVitals from './reportWebVitals'
 import AppRouter from './routing/router/AppRouter'
+import store from './state/store'
 
 import './styles/global.css'
 
@@ -14,9 +16,11 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <AppRouter />
-    </BrowserRouter>
+    <ReduxProvider store={ store }>
+      <BrowserRouter>
+        <AppRouter />
+      </BrowserRouter>
+    </ReduxProvider>
   </React.StrictMode>
 )
 
