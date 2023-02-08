@@ -1,21 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+
+import { SearchParams } from '../../models/interfaces'
+import store from '../../state/store'
+import Query from '../../components/Query/Query'
+import Search from '../../components/Search/Search'
 
 import './Query.css'
 
 
 function QueryPage(): JSX.Element {
-  // TODO
-  // get spreadsheet title and sheet names
-  // get column names for each sheet
-  // user selects sheet name
-  // user selects columns to include (default to all)
-  // user adds a filter:
-  //   column name (dropdown) / condition (dropdown) / target (input)
-  // figure out how to form the condition groups
-  // submit the request
-  // append results to bottom of page
+  const [spreadsheetName, setSpreadsheetName] = useState<string>('')
+  const [searchParams, setSearchParams] = useState<SearchParams>()
 
-  return <></>
+  useEffect(() => {
+    const { spreadsheetMetadata } = store.getState()
+    setSpreadsheetName(spreadsheetMetadata.name || '')
+  }, [])
+
+  return (
+    <div id='query-page' className='route'>
+      <h2>{ spreadsheetName}</h2>
+      <Query
+        customClass='page-query-section'
+        search={ searchParams }
+      />
+      <Search
+        customClass='page-search-section'
+        onSubmit={ (search: SearchParams) => setSearchParams(search) }
+      />
+    </div>
+  )
 }
 
 
