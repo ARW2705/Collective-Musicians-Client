@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 
 import { SearchParams } from '../../models/interfaces'
 import store from '../../state/store'
@@ -9,20 +9,15 @@ import './Query.css'
 
 
 function QueryPage(): JSX.Element {
-  const [spreadsheetName, setSpreadsheetName] = useState<string>('')
   const [searchParams, setSearchParams] = useState<SearchParams>()
-
-  useEffect(() => {
-    const { spreadsheetMetadata } = store.getState()
-    setSpreadsheetName(spreadsheetMetadata.name || '')
-  }, [])
+  const { spreadsheetMetadata } = store.getState()
 
   return (
     <div id='query-page' className='route'>
-      <h2>{ spreadsheetName}</h2>
+      <h2>{ spreadsheetMetadata.name }</h2>
       <Query
         customClass='page-query-section'
-        search={ searchParams }
+        searchParams={ searchParams }
       />
       <Search
         customClass='page-search-section'
