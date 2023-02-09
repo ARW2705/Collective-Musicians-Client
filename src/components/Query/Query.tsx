@@ -67,6 +67,7 @@ function QueryComponent(props : { customClass?: string, searchParams?: SearchPar
         items={ queryResults }
       />
       <Button
+        innerText='Submit'
         onClick={ submitQuery }
       />
     </section>
