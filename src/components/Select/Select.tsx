@@ -5,19 +5,19 @@ import { SelectOption } from '../../models/interfaces'
 import './Select.css'
 
 
-export interface SelectAttributes {
+export interface SelectAttributes<T, V> {
   title: string
-  options: SelectOption[]
-  onChange: () => {}
+  options: SelectOption<T>[]
+  onChange: (value: V) => void
   customClass?: string
   multi?: boolean
 }
 
-function SelectComponent({ title, options, onChange, customClass, multi }: SelectAttributes): JSX.Element {
+function SelectComponent<T, V = T>({ title, options, onChange, customClass, multi }: SelectAttributes<T, V>): JSX.Element {
   const [ displayTitle, setDisplayTitle ] = useState(title)
   const [ showList, setShowList ] = useState(false)
 
-  const optionList = options.map((option: SelectOption, index: number): JSX.Element => {
+  const optionList = options.map((option: SelectOption<T>, index: number): JSX.Element => {
     return (
       <li key={ index } className='select-option'>
         { option.label }
