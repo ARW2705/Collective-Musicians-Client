@@ -1,0 +1,39 @@
+.app-select {
+  position: relative;
+  width: 100%;
+}
+
+.app-select ul {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  background-color: var(--light);
+  padding: 10px;
+  margin: 0;
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  border: 2px solid gray;
+  border-radius: 15px;
+  overflow: hidden;
+  z-index: 100;
+  list-style: none;
+}
+
+.app-select li {
+  list-style: none;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.app-select li:last-child {
+  border: none;
+}
+
+.app-select li:hover {
+  background-color: var(--primary-light);
+}
+
+.app-select li.active {
+  color: var(--light);
+  background-color: var(--primary);
+}
