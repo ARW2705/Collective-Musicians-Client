@@ -10,7 +10,7 @@ function NavbarComponent({ links = [] }: { links: NavLink[] }) {
   return (
     <nav className='navbar'>
       {
-        links.map(link => <NavLinkComponent { ...link } />)
+        links.map((link, index) => <NavLinkComponent key={ index } { ...link } />)
       }
     </nav>
   )
