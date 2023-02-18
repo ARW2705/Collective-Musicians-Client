@@ -1,0 +1,11 @@
+.toggle-container {
+  width: 100%;
+  display: flex;
+  padding: 5px 0;
+}
+
+.data-container {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
