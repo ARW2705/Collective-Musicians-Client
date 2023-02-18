@@ -1,0 +1,21 @@
+.grid-view-container {
+  display: inline-grid;
+  grid-template-columns: 1fr;
+  border: 2px solid var(--gray-light);
+  border-radius: 10px;
+}
+
+.grid-cell {
+  padding: 5px;
+  border-top: 1px dotted var(--gray-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.grid-cell.end {
+  border-left: 1px dotted var(--gray-dark);
+}
+
+.grid-cell.top {
+  border-top: none;
+}
