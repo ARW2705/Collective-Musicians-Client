@@ -1,4 +1,7 @@
 .app-button {
+  --button-width-internal: var(--button-width, auto);
+
+  width: var(--button-width-internal);
   display: flex;
   justify-content: center;
   align-items: center;

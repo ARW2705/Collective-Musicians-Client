@@ -4,26 +4,26 @@ import './Button.css'
 
 
 export interface ButtonProps {
-  onClick: (event: MouseEvent<HTMLButtonElement>) => void
-  innerText: string
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
+  name: string
+  innerText?: string
   innerElement?: JSX.Element
   ariaLabel?: string
-  name?: string
   customClass?: string
-  isFlat?: boolean
-  isDisabled?: boolean
+  flat?: boolean
+  disabled?: boolean
 }
 
-function ButtonComponent({ onClick: handleOnClick, innerText, innerElement, ariaLabel, name, isFlat, isDisabled, customClass }: ButtonProps): JSX.Element {  
+function ButtonComponent({ onClick: handleOnClick, innerText, innerElement, ariaLabel, name, flat, disabled, customClass }: ButtonProps): JSX.Element {  
   return (
     <button
-      aria-label={ ariaLabel || innerText }
-      className={`app-button ${isFlat ? 'flat-button' : ''} ${customClass}`}
-      disabled={ isDisabled }
+      aria-label={ ariaLabel || name }
+      className={`app-button ${flat ? 'flat-button' : ''} ${customClass}`}
+      disabled={ disabled }
       name={ name }
       onClick={ handleOnClick }
     >
-      { innerElement || innerText }
+      { innerElement || innerText || name }
     </button>
   )
 }
