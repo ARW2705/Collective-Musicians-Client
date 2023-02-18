@@ -1,0 +1,27 @@
+.filter-group-container {
+  width: 100%;
+}
+
+.has-filters
+.add-filter-group-button {
+  margin-bottom: 10px;
+}
+
+.has-filters {
+  padding: 10px;
+  border: 3px solid var(--gray-light);
+  border-radius: 15px;
+}
+
+.group-separator {
+  text-align: center;
+}
+
+.group-separator > span {
+  text-align: center;
+  padding: 5px;
+  background-color: var(--secondary-dark);
+  border-radius: 10px;
+  font-size: 1.5rem;
+  color: var(--background-color);
+}
