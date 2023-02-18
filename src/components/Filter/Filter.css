@@ -1,0 +1,16 @@
+.filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 30px 10px;
+  margin: 10px 0;
+  border: 2px solid var(--gray-light);
+  border-radius: 15px;
+}
+
+.filter-option {
+  display: inline;
+  width: 20%;
+
+  --button-width: 100%;
+}
