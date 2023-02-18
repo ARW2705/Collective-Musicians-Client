@@ -1,0 +1,33 @@
+.filter-preview-container {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.filter-preview {
+  display: flex;
+  justify-content: center;
+  margin: 10px;
+}
+
+.filter-preview > span {
+  background-color: var(--primary-light);
+  padding: 5px;
+}
+
+.filter-preview > span:first-child {
+  border-radius: 10px 0 0 10px;
+}
+
+.filter-preview > span:last-child {
+  border-radius: 0 10px 10px 0;
+}
+
+.filter-separator {
+  text-align: center;
+}
+
+.filter-separator > span {
+  padding: 5px;
+  border-radius: 10px;
+  background-color: var(--secondary-light);
+}
