@@ -1,0 +1,41 @@
+.query-result-container {
+  margin: 10px 0;
+  border-bottom: 1px solid black;
+}
+
+.query-result-container:first-child {
+  margin: 0 0 5px;
+}
+
+.query-result-container:last-child {
+  margin: 5px 0 0;
+}
+
+.query-result-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+.query-result-header.divider {
+  border-bottom: 1px solid var(--dark);
+}
+
+.query-result {
+  display: flex;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.query-result > span:first-child {
+  margin-right: 5px;
+  font-weight: bold;
+}
+
+.query-result-remainder {
+  display: flex;
+}
+
+.query-results-list {
+  margin: 10px 0;
+}
