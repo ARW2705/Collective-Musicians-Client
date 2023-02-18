@@ -1,0 +1,21 @@
+.view-toggle-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.view-option {
+  width: 50%;
+  height: 50%;
+  color: var(--dark);
+  background-color: var(--primary-light);
+  border-radius: 10px 0 0 10px;
+}
+
+.view-option.active {
+  color: var(--background-color);
+  background-color: var(--primary);
+}
+
+.view-option:nth-child(2n) {
+  border-radius: 0 10px 10px 0;
+}
