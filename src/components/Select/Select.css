@@ -1,6 +1,9 @@
 .app-select {
-  position: relative;
   width: 100%;
+}
+
+.app-select.set-position {
+  position: relative;
 }
 
 .app-select ul {
@@ -10,13 +13,28 @@
   padding: 10px;
   margin: 0;
   position: absolute;
-  top: -2px;
-  left: -2px;
+  
   border: 2px solid gray;
   border-radius: 15px;
   overflow: hidden;
   z-index: 100;
   list-style: none;
+}
+
+.app-select ul.open-up {
+  bottom: -2px;
+  left: -2px;
+}
+
+.app-select ul.open-center {
+  top: 0;
+  left: 10px;
+  right: 10px;
+}
+
+.app-select ul.open-down {
+  top: -2px;
+  left: -2px;
 }
 
 .app-select li {
