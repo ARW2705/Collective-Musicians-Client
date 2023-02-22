@@ -1,20 +1,20 @@
-import React, { MouseEvent } from 'react'
+import React, { memo, MouseEvent } from 'react'
 
 import './Button.css'
 
 
 export interface ButtonProps {
-  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
   name: string
-  innerText?: string
-  innerElement?: JSX.Element
   ariaLabel?: string
   customClass?: string
-  flat?: boolean
   disabled?: boolean
+  flat?: boolean
+  innerElement?: JSX.Element
+  innerText?: string
+  onClick?: (event: MouseEvent<HTMLButtonElement>) => void
 }
 
-function ButtonComponent({ onClick: handleOnClick, innerText, innerElement, ariaLabel, name, flat, disabled, customClass }: ButtonProps): JSX.Element {  
+function ButtonComponent({ customClass = '', onClick: handleOnClick, name, ariaLabel, disabled, flat, innerElement, innerText }: ButtonProps): JSX.Element {  
   return (
     <button
       aria-label={ ariaLabel || name }
@@ -29,4 +29,4 @@ function ButtonComponent({ onClick: handleOnClick, innerText, innerElement, aria
 }
 
 
-export default React.memo(ButtonComponent)
+export default memo(ButtonComponent)
