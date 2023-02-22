@@ -1,12 +1,16 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { NavLink as RouterNavLink } from 'react-router-dom'
 
-import { NavLink } from '../../../models/interfaces'
+import { NavLink } from '../../../models/nav-link'
 
 import './NavLink.css'
 
 
-function NavLinkComponent(link: NavLink) {
+export interface NavLinkProps {
+  link: NavLink
+}
+
+function NavLinkComponent({ link }: NavLinkProps) {
   const { title, route, customClass = '' } = link
   const name: string = title.toLowerCase()
 
@@ -24,4 +28,4 @@ function NavLinkComponent(link: NavLink) {
 }
 
 
-export default NavLinkComponent
+export default memo(NavLinkComponent)

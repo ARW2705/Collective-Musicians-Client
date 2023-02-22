@@ -1,20 +1,23 @@
-import React from 'react'
+import React, { memo } from 'react'
 
-import { NavLink } from '../../../models/interfaces'
+import { NavLink } from '../../../models/nav-link'
+
 import NavLinkComponent from '../NavLink/NavLink'
 
 import './Navbar.css'
 
 
-function NavbarComponent({ links = [] }: { links: NavLink[] }) {
+export interface NavbarProps {
+  links: NavLink[]
+}
+
+function NavbarComponent({ links = [] }: NavbarProps) {
   return (
     <nav className='navbar'>
-      {
-        links.map((link, index) => <NavLinkComponent key={ index } { ...link } />)
-      }
+      { links.map((link, index) => <NavLinkComponent key={ index } link={ link } />) }
     </nav>
   )
 }
 
 
-export default NavbarComponent
+export default memo(NavbarComponent)
