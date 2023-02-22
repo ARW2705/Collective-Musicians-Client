@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { memo } from 'react'
 
-import { QueryCondition, SelectOption, QueryTarget } from '../../models/interfaces'
+import { QueryCondition } from '../../models/query-condition'
+import { QueryTarget    } from '../../models/query-target'
+import { SelectOption   } from '../../models/select-option'
+
 import { FILTER_CONDITION_OPTIONS } from '../../shared/filter-condition-defs'
 
 import './FilterPreview.css'
@@ -30,7 +33,12 @@ function FilterPreviewComponent({ filters }: FilterPreviewProps): JSX.Element {
     const preview: JSX.Element = buildPreviewElement(key, index, condition, filters[key].target)
 
     if (index % 2 !== 0) {
-      previews = [...previews, <div className='filter-separator' key={ index }><span>AND</span></div>]
+      previews = [
+        ...previews,
+        <div className='filter-separator' key={ index }>
+          <span>AND</span>
+        </div>
+      ]
     }
 
     previews = [...previews, preview]
@@ -45,4 +53,4 @@ function FilterPreviewComponent({ filters }: FilterPreviewProps): JSX.Element {
 }
 
 
-export default React.memo(FilterPreviewComponent)
+export default memo(FilterPreviewComponent)
