@@ -1,7 +1,9 @@
 import React, { MouseEvent, useEffect, useRef, useState } from 'react'
 
-import { SelectOption, ValidatorFn, ValidationError } from '../../models/interfaces'
-import { validate } from '../../shared/validation/validate'
+import { SelectOption    } from '../../models/select-option'
+import { ValidatorFn     } from '../../models/validator-function'
+import { ValidationError } from '../../models/validation-error'
+import { validate        } from '../../shared/validation/validate'
 
 import Button from '../Button/Button'
 
@@ -9,18 +11,18 @@ import './Select.css'
 
 
 export interface SelectProps<T> {
-  title: string
-  options: SelectOption<T>[]
   onChange: (values: T[], errors: ValidationError<T>) => void
-  validators?: ValidatorFn<T>[]
+  options: SelectOption<T>[]
+  title: string
   customClass?: string
   multi?: boolean
-  rowLimit?: number
   openDirection?: 'up' | 'center' | 'down'
   reset?: boolean
+  rowLimit?: number
+  validators?: ValidatorFn<T>[]
 }
 
-function SelectComponent<T>({ title, options, onChange: handleOnChange, validators = [], customClass = '', multi, rowLimit = 8, openDirection = 'down', reset = false }: SelectProps<T>): JSX.Element {
+function SelectComponent<T>({ customClass = '', openDirection = 'down', rowLimit = 8, validators = [], reset = false, onChange: handleOnChange, multi, options, title }: SelectProps<T>): JSX.Element {
   const [ displayTitle, setDisplayTitle ] = useState(title)
   const [ showList, setShowList ] = useState(false)
   const [ selected, setSelected ] = useState<number[]>([])
