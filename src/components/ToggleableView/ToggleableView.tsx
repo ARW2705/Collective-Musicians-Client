@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 
-import { ViewOption } from '../../models/interfaces'
+import { ViewOption } from '../../models/view-option'
 
 import ViewToggle from '../ViewToggle/ViewToggle'
 
 import { buildDataView } from './build-view-element'
+
 import './ToggleableView.css'
 
 
@@ -35,4 +36,4 @@ function ToggleableViewComponent<T extends {[key: string]: any}>({ displayData, 
 }
 
 
-export default React.memo(ToggleableViewComponent)
+export default memo(ToggleableViewComponent)

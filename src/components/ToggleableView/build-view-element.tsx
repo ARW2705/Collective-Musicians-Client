@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Primitive } from '../../models/interfaces'
+import { Primitive } from '../../models/primitive'
 
 import GridView from '../GridView/GridView'
 import ListView from '../ListView/ListView'
