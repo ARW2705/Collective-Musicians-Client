@@ -1,15 +1,18 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { memo, useContext, useRef, useState } from 'react'
 
-import { QueryCondition, SelectOption, ValidationError } from '../../models/interfaces'
-import { required } from '../../shared/validation/validation'
+import { QueryCondition  } from '../../models/query-condition'
+import { SelectOption    } from '../../models/select-option'
+import { ValidationError } from '../../models/validation-error'
 
-import Button from '../Button/Button'
-import Select from '../Select/Select'
-import Input from '../Input/Input'
-import FilterPreview from '../FilterPreview/FilterPreview'
-import { QueryContext } from '../Query/QueryContext'
+import { QueryContext } from '../../contexts/Query/QueryContext'
 
 import { FILTER_CONDITION_OPTIONS } from '../../shared/filter-condition-defs'
+import { required                 } from '../../shared/validation/validation'
+
+import Button        from '../Button/Button'
+import FilterPreview from '../FilterPreview/FilterPreview'
+import Input         from '../Input/Input'
+import Select        from '../Select/Select'
 
 import './Filter.css'
 
@@ -95,4 +98,4 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
 }
 
 
-export default FilterComponent
+export default memo(FilterComponent)
