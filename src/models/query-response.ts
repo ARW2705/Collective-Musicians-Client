@@ -1,3 +1,6 @@
+import { QueryResult } from './query-result'
+
 export interface QueryResponse {
-  [key: string]: string | number
+  results: QueryResult[]
+  resultCount: number
 }
