@@ -1,0 +1,33 @@
+.pagination-container {
+  /* display: flex; */
+  /* justify-content: center; */
+  /* align-items: center; */
+  display: grid;
+  grid-template-columns: 
+    [col-1] auto
+    [col-2] 80px
+    [col-3] 160px
+    [col-4] 80px
+    [col-5] auto;
+  justify-items: center;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.pagination-button {
+  width: 80px;
+  height: 40px;
+}
+
+.pagination-button:first-child {
+  grid-column: col-2;
+}
+
+.pagination-button:last-child {
+  grid-column: col-4;
+}
+
+.pagination-container span {
+  font-size: 1.25rem;
+  grid-column: col-3;
+}
