@@ -1,6 +1,9 @@
 import React, { ChangeEvent, FocusEvent, useEffect, useRef, useState } from 'react'
 
-import { ValidationError, ValidatorFn, TouchStatus } from '../../models/interfaces'
+import { TouchStatus     } from '../../models/touch-status'
+import { ValidationError } from '../../models/validation-error'
+import { ValidatorFn     } from '../../models/validator-function'
+
 import { validate } from '../../shared/validation/validation'
 
 import './Input.css'
@@ -8,19 +11,18 @@ import './Input.css'
 
 export interface InputProps {
   name: string
-  type: string
   onChange: (name: string, value: string | number, errors: ValidationError<string | number>) => void
-  initialValue?: string | number,
-  validators?: ValidatorFn<string | number>[]
+  type: string
   customClass?: string
+  initialValue?: string | number,
   label?: string
-  ariaLabel?: string
-  min?: number
   max?: number
+  min?: number
   reset?: boolean
+  validators?: ValidatorFn<string | number>[]
 }
 
-function InputComponent({ initialValue = '', name, type, onChange: handleOnChange, validators = [], customClass = '', label, ariaLabel, min, max, reset = false }: InputProps): JSX.Element {
+function InputComponent({ customClass = '', initialValue = '', reset = false, validators = [], onChange: handleOnChange, name, type, label, max, min }: InputProps): JSX.Element {
   const [ value, setValue ] = useState<string | number>(initialValue)
   const [ touchStatus, setTouchStatus ] = useState<TouchStatus>({
     focus: false,
