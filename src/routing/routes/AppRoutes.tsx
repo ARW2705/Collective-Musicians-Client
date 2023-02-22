@@ -1,10 +1,11 @@
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 
-import Home from '../../pages/Home/Home'
+import Home  from '../../pages/Home/Home'
 import Query from '../../pages/Query/Query'
 
 import './AppRoutes.css'
+
 
 function AppRoutes(): JSX.Element {
   return (

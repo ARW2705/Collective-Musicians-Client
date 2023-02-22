@@ -1,4 +1,4 @@
-import { SelectOption } from '../models/interfaces'
+import { SelectOption } from '../models/select-option'
 
 export const FILTER_CONDITION_OPTIONS: SelectOption[] = [
   { label: 'Greater Than'            , value: 'gt'     },

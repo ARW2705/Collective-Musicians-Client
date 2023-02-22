@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Announcements from '../../components/Announcements/Announcements'
-import Image from '../../components/Image/Image'
+import Image         from '../../components/Image/Image'
 
 import './Home.css'
 

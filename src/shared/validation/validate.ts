@@ -1,4 +1,6 @@
-import { ValidatorFn, ValidationError } from '../../models/interfaces'
+import { ValidatorFn } from '../../models/validator-function'
+import { ValidationError } from '../../models/validation-error'
+
 
 export function validate<T>(value: T | null, validators: ValidatorFn<T>[]): ValidationError<T> {
   if (!validators) return {}

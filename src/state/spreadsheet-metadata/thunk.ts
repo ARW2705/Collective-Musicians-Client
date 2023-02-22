@@ -1,4 +1,4 @@
-import { SpreadsheetMetadata } from '../../models/interfaces'
+import { SpreadsheetMetadata } from '../../models/spreadsheet-metadata'
 import { get } from '../../http/client'
 import { set } from './slice'
 import { Dispatch } from 'redux'

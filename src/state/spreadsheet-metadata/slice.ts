@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { SpreadsheetMetadata } from '../../models/interfaces'
+import { SpreadsheetMetadata } from '../../models/spreadsheet-metadata'
 
 
 const initialState: SpreadsheetMetadata = {
