@@ -1,16 +1,26 @@
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 
+import { QueryCondition } from '../../models/query-condition'
+import { QueryParams    } from '../../models/query-params'
+import { QueryResponse  } from '../../models/query-response'
+import { SelectOption   } from '../../models/select-option'
+import { SearchParams   } from '../../models/search-params'
+
 import { query } from '../../http/client'
-import { SearchParams, SelectOption, QueryResponse, QueryFilter, QueryParams, QueryCondition, SpreadsheetMetadata } from '../../models/interfaces'
+
 import { selectSheetNames } from '../../state/spreadsheet-metadata/selector'
-import store from '../../state/store'
-import Button from '../Button/Button'
+import store                from '../../state/store'
+
+import { PaginationContext } from '../../contexts/Pagination/PaginationContext'
+import { QueryContext      } from '../../contexts/Query/QueryContext'
+
+import Button          from '../Button/Button'
+import Divider         from '../Divider/Divider'
+import FilterGroup     from '../FilterGroup/FilterGroup'
 import QueryResultList from '../QueryResultList/QueryResultList'
-import FilterGroup from '../FilterGroup/FilterGroup'
-import Select from '../Select/Select'
-import { QueryContext } from './QueryContext'
-import Divider from '../Divider/Divider'
+import Select          from '../Select/Select'
+
 import './Query.css'
 
 
@@ -19,71 +29,98 @@ export interface QueryProps {
   searchParams?: SearchParams
 }
 
-function QueryComponent({ searchParams, customClass = '' }: QueryProps): JSX.Element {
+function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Element {
   const { spreadsheetMetadata } = store.getState()
   const sheetNames: string[] = useSelector(selectSheetNames)
+  const { page, pageLimit } = useContext(PaginationContext)
   const [ selectedSheetIndex, setSelectedSheetIndex ] = useState<number>(-1)
-  const [ queryResults, setQueryResults ] = useState<QueryResponse[]>([])
+  const [ columnNames, setColumnNames ] = useState<string[]>([])
+  const [ queryResponse, setQueryResponse ] = useState<QueryResponse>()
+  const [ queryInProgress, setQueryInProgress ] = useState<boolean>(false)
+  const [ reset, setReset ] = useState<boolean>(false)
   const includeColumns = useRef<string[]>([])
   const filterConditions = useRef<QueryCondition[]>([])
+  const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
 
-  const submitQuery = async () => {
-    console.log('submit query', selectedSheetIndex, includeColumns.current, filterConditions.current)
+  const submitQuery = useCallback(async (submit?: boolean): Promise<void> => {
+    if (!submit) return
+
     try {
-      let queryParams: QueryParams = { sheetName: sheetNames[selectedSheetIndex], page: 1, limit: 5 }
+      let queryParams: QueryParams = { sheetName: sheetNames[selectedSheetIndex], page, limit: pageLimit }
       let queryFilter: { includeColumns?: string[], conditions?: QueryCondition[] } = {}
+
       if (includeColumns.current.length) {
-        Object.assign(queryFilter, { includeColumns: includeColumns.current })
-      }
-      if (filterConditions.current.length) {
-        Object.assign(queryFilter, { conditions: filterConditions.current })
+        queryFilter = { ...queryFilter, includeColumns: includeColumns.current }
       }
 
-      const response = await query<QueryResponse[]>('spreadsheets/sheet/query', queryParams, { filter: queryFilter })
-      setQueryResults(response)
+      if (filterConditions.current.length) {
+        queryFilter = { ...queryFilter, conditions: filterConditions.current }
+      }
+
+      const response = await query<QueryResponse>(
+        'spreadsheets/sheet/query',
+        queryParams,
+        { filter: queryFilter }
+      )
+      setQueryResponse(response)
     } catch (error) {
       console.log('got error trying to submit query', error)
     }
-  }
+  }, [page, pageLimit, sheetNames, selectedSheetIndex])
+
+  useEffect(() => {
+    setQueryResponse(undefined)
+  }, [selectedSheetIndex])
+
+  useEffect(() => {
+    if (selectedSheetIndex !== -1) {
+      setReset(prevProps => !prevProps)
+      setColumnNames(spreadsheetMetadata.sheets[selectedSheetIndex].columnNames)
+    }
+  }, [spreadsheetMetadata, selectedSheetIndex])
+
+  useEffect(() => {
+    const { page: prevPage, pageLimit: prevPageLimit } = previousPage.current
+    if (page !== prevPage || pageLimit !== prevPageLimit) submitQuery(true)
+    previousPage.current = { page, pageLimit }
+  }, [page, pageLimit, submitQuery])
 
   return (
     <section className={ `query-container ${customClass}` }>
-      <Select
-        title='Select a Sheet'
-        options={ sheetNames.map((name: string, index: number): SelectOption<number> => ({ label: name, value: index })) }
-        onChange={ (sheetIndex: number[]): void => setSelectedSheetIndex(sheetIndex[0]) }
-      />
-      <Divider />
-      {
-        selectedSheetIndex !== -1 &&
-        <>
-          <Select
-            title='Include Columns'
-            options={ spreadsheetMetadata.sheets[selectedSheetIndex].columnNames.map((name: string): SelectOption => ({ label: name })) }
-            onChange={ (columns: string[]): void => { includeColumns.current = columns } }
-            multi
-          />
-          <Divider />
-          <QueryContext.Provider value={ { columnNames: spreadsheetMetadata.sheets[selectedSheetIndex].columnNames } }>
+      <QueryContext.Provider value={ { columnNames, queryInProgress, queryResponse } }>
+        <Select
+          title='Select a Sheet'
+          options={ sheetNames.map((name: string, index: number): SelectOption<number> => ({ label: name, value: index })) }
+          onChange={ (sheetIndex: number[]): void => setSelectedSheetIndex(sheetIndex[0]) }
+        />
+        <Divider />
+        {
+          selectedSheetIndex !== -1 &&
+          <>
+            <Select
+              title='Include Columns'
+              options={ spreadsheetMetadata.sheets[selectedSheetIndex].columnNames.map((name: string): SelectOption => ({ label: name })) }
+              onChange={ (columns: string[]): void => { includeColumns.current = columns } }
+              reset={ reset }
+              multi
+            />
+            <Divider />
             <FilterGroup
               onChange={ (conditions: QueryCondition[]): void => { filterConditions.current = conditions } }
             />
-          </QueryContext.Provider>
-          <Divider />
-        </>
-      }
-      <Button
-        name='submit-query'
-        innerText='Submit'
-        onClick={ submitQuery }
-      />
-      {
-        !!queryResults.length &&
-        <QueryResultList
-          customClass='page-query-results'
-          queryResults={ queryResults }
+            <Divider />
+          </>
+        }
+        <Button
+          name='submit-query'
+          innerText='Submit'
+          onClick={ () => submitQuery(true) }
         />
-      }
+        {
+          !!queryResponse?.results.length &&
+          <QueryResultList customClass='page-query-results' />
+        }
+      </QueryContext.Provider>
     </section>
   )
 }

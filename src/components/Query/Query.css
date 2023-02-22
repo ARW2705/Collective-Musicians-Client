@@ -3,3 +3,7 @@
   flex-wrap: wrap;
   padding: 2%;
 }
+
+.page-query-results {
+  width: 100%;
+}
