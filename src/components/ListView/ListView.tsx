@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 
-import { Primitive } from '../../models/interfaces'
+import { Primitive } from '../../models/primitive'
 
 import './ListView.css'
 
@@ -22,7 +22,7 @@ export interface ListViewProps {
   customClass?: string
 }
 
-function ListViewComponent({ list, customClass = '' }: ListViewProps): JSX.Element {
+function ListViewComponent({ customClass = '', list }: ListViewProps): JSX.Element {
   if (list.length === 0) return <></>
 
   const listElement: JSX.Element[] = buildListElement(list)
@@ -35,4 +35,4 @@ function ListViewComponent({ list, customClass = '' }: ListViewProps): JSX.Eleme
 }
 
 
-export default React.memo(ListViewComponent)
+export default memo(ListViewComponent)
