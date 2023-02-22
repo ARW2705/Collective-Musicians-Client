@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 
-import { GridCell } from '../../models/interfaces'
+import { GridCell } from '../../models/grid-cell'
 
 import './GridView.css'
 
@@ -14,8 +14,8 @@ function buildGridElement(grid: GridCell[][]): JSX.Element[] {
   return grid.reduce((cellElements: JSX.Element[], row: GridCell[], rowIndex: number): JSX.Element[] => {
     const rowElements: JSX.Element[] = row.map((cell: GridCell, cellIndex: number): JSX.Element => (
       <div
-        className={ `grid-cell ${rowIndex === 0 ? 'top' : ''} ${cellIndex === row.length - 1 ? 'end' : ''}` }
         key={ `${rowIndex}${cellIndex}` }
+        className={ `grid-cell ${rowIndex === 0 ? 'top' : ''} ${cellIndex === row.length - 1 ? 'end' : ''}` }
       >
         { cell }
       </div>
@@ -41,4 +41,4 @@ function GridViewComponent({ grid, customClass = '' }: GridViewProps): JSX.Eleme
 }
 
 
-export default React.memo(GridViewComponent)
+export default memo(GridViewComponent)
