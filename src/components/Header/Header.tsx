@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { memo } from 'react'
 
-import { NavLink } from '../../models/interfaces'
+import { NavLink } from '../../models/nav-link'
+
 import NavbarComponent from '../Navigation/Navbar/Navbar'
 
 import './Header.css'
@@ -20,4 +21,4 @@ function Header() {
 }
 
 
-export default React.memo(Header)
+export default memo(Header)
