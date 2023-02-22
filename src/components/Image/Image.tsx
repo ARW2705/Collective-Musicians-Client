@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { memo } from 'react'
 
-import { ImageMetadata } from '../../models/interfaces'
+import { ImageMetadata } from '../../models/image-metadata'
 
 import './Image.css'
 
@@ -18,4 +18,4 @@ function ImageComponent(imageData: ImageMetadata): JSX.Element {
 }
 
 
-export default React.memo(ImageComponent)
+export default memo(ImageComponent)
