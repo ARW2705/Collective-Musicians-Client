@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 import './KeyVal.css'
 
@@ -8,7 +8,7 @@ export interface KeyValProps {
   customClass?: string
 }
 
-function KeyValComponent({ pair, customClass = '' }: KeyValProps): JSX.Element {
+function KeyValComponent({ customClass = '', pair }: KeyValProps): JSX.Element {
   const key: string = Object.keys(pair)[0] // intended to be a single pair, only first pair will be used
   const value: string | number | boolean = pair[key]
 
@@ -21,4 +21,4 @@ function KeyValComponent({ pair, customClass = '' }: KeyValProps): JSX.Element {
 }
 
 
-export default React.memo(KeyValComponent)
+export default memo(KeyValComponent)
