@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 
-import { ViewOption } from '../../models/interfaces'
+import { ViewOption } from '../../models/view-option'
 
 import Button from '../Button/Button'
 
@@ -8,11 +8,12 @@ import './ViewToggle.css'
 
 
 function buildViewOptionButtons(options: ViewOption[], activeOption: string, setToggle: React.Dispatch<React.SetStateAction<string>>): JSX.Element[] {
-  return options.map((option: ViewOption): JSX.Element => {
+  return options.map((option: ViewOption, index: number): JSX.Element => {
     const { name, icon } = option
 
     return (
       <Button
+        key={ index }
         name={ name }
         innerText={ name }
         innerElement={ icon }
@@ -48,4 +49,4 @@ function ViewToggleComponent({ options, onChange }: ViewToggleProps): JSX.Elemen
 }
 
 
-export default React.memo(ViewToggleComponent)
+export default memo(ViewToggleComponent)
