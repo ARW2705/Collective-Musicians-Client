@@ -1,6 +1,6 @@
-import React, { useRef, useState } from 'react'
+import React, { memo, useRef, useState } from 'react'
 
-import { QueryCondition } from '../../models/interfaces'
+import { QueryCondition } from '../../models/query-condition'
 
 import Button from '../Button/Button'
 import Filter from '../Filter/Filter'
@@ -62,4 +62,4 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
 }
 
 
-export default FilterGroupComponent
+export default memo(FilterGroupComponent)
