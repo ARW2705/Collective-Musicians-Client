@@ -1,18 +1,18 @@
-import React, { useState } from 'react'
+import React, { memo, useState } from 'react'
 import { FaListUl, FaTable } from 'react-icons/fa'
 
-import { QueryResponse } from '../../models/interfaces'
+import { QueryResult } from '../../models/query-result'
 
-import Accordion from '../Accordion/Accordion'
-import Button from '../Button/Button'
-import KeyVal from '../KeyVal/KeyVal'
+import Accordion      from '../Accordion/Accordion'
+import Button         from '../Button/Button'
+import KeyVal         from '../KeyVal/KeyVal'
 import ToggleableView from '../ToggleableView/ToggleableView'
 
 import './QueryResult.css'
 
 
 export interface QueryResultProps {
-  results: QueryResponse
+  results: QueryResult
 }
 
 function QueryResultComponent({ results }: QueryResultProps): JSX.Element {
@@ -32,7 +32,7 @@ function QueryResultComponent({ results }: QueryResultProps): JSX.Element {
     )
 
     if (keys.length > 1) {
-      const { [aboveFoldKey]: _, ...belowFoldResults }: QueryResponse = results
+      const { [aboveFoldKey]: _, ...belowFoldResults }: QueryResult = results
       belowFoldElement = (
         <ToggleableView
           displayData={ belowFoldResults }
@@ -67,4 +67,4 @@ function QueryResultComponent({ results }: QueryResultProps): JSX.Element {
 }
 
 
-export default React.memo(QueryResultComponent)
+export default memo(QueryResultComponent)

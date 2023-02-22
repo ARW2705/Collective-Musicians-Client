@@ -39,3 +39,7 @@
 .query-results-list {
   margin: 10px 0;
 }
+
+.accordion-button {
+  white-space: nowrap;
+}
