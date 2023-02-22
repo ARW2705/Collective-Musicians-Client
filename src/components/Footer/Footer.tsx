@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 import './Footer.css'
 
@@ -12,4 +12,4 @@ function Footer() {
 }
 
 
-export default React.memo(Footer)
+export default memo(Footer)
