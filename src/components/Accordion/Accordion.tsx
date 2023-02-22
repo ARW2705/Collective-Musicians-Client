@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 
 import './Accordion.css'
 
@@ -18,4 +18,4 @@ function AccordionComponent({ element, show, customClass = '' }: AccordionProps)
 }
 
 
-export default React.memo(AccordionComponent)
+export default memo(AccordionComponent)
