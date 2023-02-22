@@ -1,29 +1,40 @@
-import React from 'react'
+import React, { memo, useContext } from 'react'
 
-import { QueryResponse } from '../../models/interfaces'
+import { QueryResult } from '../../models/query-result'
 
-import QueryResult from '../QueryResult/QueryResult'
+import { QueryContext } from '../../contexts/Query/QueryContext'
+
+import Pagination           from '../Pagination/Pagination'
+import QueryResultComponent from '../QueryResult/QueryResult'
 
 import './QueryResultList.css'
 
 
 export interface QueryResultListProps {
-  queryResults: QueryResponse[],
   customClass?: string
 }
 
-function QueryResultListComponent({ queryResults, customClass = '' }: QueryResultListProps): JSX.Element {
-  const results: JSX.Element[] = queryResults
-    .map((queryResult: QueryResponse, index: number): JSX.Element => (
-      <QueryResult results={ queryResult } key={ index } />
+function QueryResultListComponent({ customClass = '' }: QueryResultListProps): JSX.Element {
+  const { queryResponse } = useContext(QueryContext)
+  if (!queryResponse) return <></>
+
+  const results: JSX.Element[] = queryResponse.results
+    .map((queryResult: QueryResult, index: number): JSX.Element => (
+      <QueryResultComponent results={ queryResult } key={ index } />
     ))
 
   return (
     <div className={ `query-results-container ${customClass}` }>
-      { results }
+      <div className='query-results-content'>
+        <div className='query-results-header'>
+
+        </div>
+        { results }
+      </div>
+      <Pagination />
     </div>
   )
 }
 
 
-export default React.memo(QueryResultListComponent)
+export default memo(QueryResultListComponent)
