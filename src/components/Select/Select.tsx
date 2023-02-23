@@ -62,12 +62,20 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', rowLimit
 
   const handleClick = (event: MouseEvent<HTMLUListElement>) => {
     const targetIndex: number = parseInt((event.target as HTMLUListElement).getAttribute('data-index') || '')
-    if (!isNaN(targetIndex)) {
-      setErrorState({ errors: {}, show: false })
-      setSelected(multi ? [...selected, targetIndex] : [targetIndex])
+    if (isNaN(targetIndex)) return
+
+    if (multi) {
+      const currentSelectedIndex: number = selected.findIndex(selectedIndex => selectedIndex === targetIndex)
+      if (currentSelectedIndex === -1) {
+        setSelected(prevSelected => [...prevSelected, targetIndex])
+      } else {
+        setSelected(prevSelected => [...prevSelected.slice(0, currentSelectedIndex), ...prevSelected.slice(currentSelectedIndex + 1, prevSelected.length)])
+      }
     } else {
-      setErrorState({ errors: validate<T>(null, validators), show: false })
+      setSelected([targetIndex])
     }
+
+    setErrorState({ errors: validate<T>(null, validators), show: false })
   }
 
   return (
@@ -88,7 +96,11 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', rowLimit
         >
           {
             options.map((option: SelectOption<T>, index: number): JSX.Element => (
-              <li key={ index } data-index={ index } className={`select-option ${selected.includes(index) ? 'active' : ''}`}>
+              <li
+                key={ index }
+                data-index={ index }
+                className={`select-option ${selected.includes(index) ? 'active' : ''}`}
+              >
                 { option.label }
               </li>
             ))
