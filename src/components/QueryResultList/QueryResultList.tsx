@@ -27,8 +27,7 @@ function QueryResultListComponent({ customClass = '' }: QueryResultListProps): J
     <div className={ `query-results-container ${customClass}` }>
       <div className='query-results-content'>
         <div className='query-results-header'>
-
-      <Pagination />
+          <Pagination />
         </div>
         { results }
       </div>
