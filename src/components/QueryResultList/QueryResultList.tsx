@@ -28,10 +28,10 @@ function QueryResultListComponent({ customClass = '' }: QueryResultListProps): J
       <div className='query-results-content'>
         <div className='query-results-header'>
 
+      <Pagination />
         </div>
         { results }
       </div>
-      <Pagination />
     </div>
   )
 }
