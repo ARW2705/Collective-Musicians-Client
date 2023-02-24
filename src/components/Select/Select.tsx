@@ -64,18 +64,23 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', rowLimit
     const targetIndex: number = parseInt((event.target as HTMLUListElement).getAttribute('data-index') || '')
     if (isNaN(targetIndex)) return
 
+    let errors: ValidationError<T>
+    let selections: number[] = selected
     if (multi) {
       const currentSelectedIndex: number = selected.findIndex(selectedIndex => selectedIndex === targetIndex)
       if (currentSelectedIndex === -1) {
-        setSelected(prevSelected => [...prevSelected, targetIndex])
+        selections = [...selections, targetIndex]
       } else {
-        setSelected(prevSelected => [...prevSelected.slice(0, currentSelectedIndex), ...prevSelected.slice(currentSelectedIndex + 1, prevSelected.length)])
+        selections = [...selected.slice(0, currentSelectedIndex), ...selected.slice(currentSelectedIndex + 1, selected.length)]
       }
+      errors = validate<T>(selections as T, validators)
     } else {
-      setSelected([targetIndex])
+      errors = validate<T>([targetIndex] as T, validators)
+      selections = [targetIndex]
     }
 
-    setErrorState({ errors: validate<T>(null, validators), show: false })
+    setSelected(selections)
+    setErrorState({ errors, show: Object.keys(errors).length > 0 })
   }
 
   return (
