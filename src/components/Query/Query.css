@@ -7,3 +7,15 @@
 .page-query-results {
   width: 100%;
 }
+
+.included-columns {
+  padding: 10px;
+  border: 2px solid var(--gray-light);
+  border-radius: 10px;
+}
+
+.included-columns span:first-child {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+}

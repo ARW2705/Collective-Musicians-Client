@@ -35,10 +35,11 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   const { page, pageLimit } = useContext(PaginationContext)
   const [ selectedSheetIndex, setSelectedSheetIndex ] = useState<number>(-1)
   const [ columnNames, setColumnNames ] = useState<string[]>([])
+  const [ includeColumns, setIncludeColumns ] = useState<string[]>([])
   const [ queryResponse, setQueryResponse ] = useState<QueryResponse>()
   const [ queryInProgress, setQueryInProgress ] = useState<boolean>(false)
   const [ reset, setReset ] = useState<boolean>(false)
-  const includeColumns = useRef<string[]>([])
+  // const includeColumns = useRef<string[]>([])
   const filterConditions = useRef<QueryCondition[]>([])
   const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
 
@@ -49,8 +50,8 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
       let queryParams: QueryParams = { sheetName: sheetNames[selectedSheetIndex], page, limit: pageLimit }
       let queryFilter: { includeColumns?: string[], conditions?: QueryCondition[] } = {}
 
-      if (includeColumns.current.length) {
-        queryFilter = { ...queryFilter, includeColumns: includeColumns.current }
+      if (includeColumns.length) {
+        queryFilter = { ...queryFilter, includeColumns: includeColumns }
       }
 
       if (filterConditions.current.length) {
@@ -66,7 +67,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
     } catch (error) {
       console.log('got error trying to submit query', error)
     }
-  }, [page, pageLimit, sheetNames, selectedSheetIndex])
+  }, [page, pageLimit, sheetNames, selectedSheetIndex, includeColumns])
 
   useEffect(() => {
     setQueryResponse(undefined)
@@ -100,10 +101,17 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
             <Select
               title='Include Columns'
               options={ spreadsheetMetadata.sheets[selectedSheetIndex].columnNames.map((name: string): SelectOption => ({ label: name })) }
-              onChange={ (columns: string[]): void => { includeColumns.current = columns } }
+              onChange={ (columns: string[]): void => setIncludeColumns(columns) }
               reset={ reset }
               multi
             />
+            {
+              includeColumns.length > 0 &&
+              <p className='included-columns'>
+                <span>Including columns</span>
+                <span>{ includeColumns.join(', ') }</span>
+              </p>
+            }
             <Divider />
             <FilterGroup
               onChange={ (conditions: QueryCondition[]): void => { filterConditions.current = conditions } }
