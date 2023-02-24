@@ -39,7 +39,6 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   const [ queryResponse, setQueryResponse ] = useState<QueryResponse>()
   const [ queryInProgress, setQueryInProgress ] = useState<boolean>(false)
   const [ reset, setReset ] = useState<boolean>(false)
-  // const includeColumns = useRef<string[]>([])
   const filterConditions = useRef<QueryCondition[]>([])
   const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
 
