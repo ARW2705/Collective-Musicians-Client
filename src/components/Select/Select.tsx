@@ -31,6 +31,7 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', rowLimit
     show: false
   })
   const onInit = useRef<boolean>(true)
+  const previousSelected = useRef<number[]>([])
   const colCount: number = Math.ceil(options.length / rowLimit)
 
   useEffect(() => {
@@ -38,27 +39,26 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', rowLimit
       onInit.current = false
       return
     }
+
     setSelected([])
     setErrorState({ errors: {}, show: false })
   }, [reset])
 
   useEffect(() => {
-    if (!selected.length || !options.length) {
-      setDisplayTitle(title)
-      return
-    }
+    if (JSON.stringify(selected) === JSON.stringify(previousSelected.current)) return
 
+    previousSelected.current = selected
     if (multi) {
       handleOnChange(selected.map((index: number): T => {
         const { label, value }: SelectOption<T> = options[index]
         return (value ?? label) as T
       }), errorState.errors)
-    } else {
+    } else if (selected.length > 0) {
       const { label, value }: SelectOption<T> = options[selected[0]]
       handleOnChange([(value ?? label) as T], errorState.errors)
       setDisplayTitle(label)
     }
-  }, [title, selected, multi, options, handleOnChange, errorState])
+  }, [selected, multi, options, handleOnChange, errorState])
 
   const handleClick = (event: MouseEvent<HTMLUListElement>) => {
     const targetIndex: number = parseInt((event.target as HTMLUListElement).getAttribute('data-index') || '')
