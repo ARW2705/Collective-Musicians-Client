@@ -93,10 +93,10 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
           options={ sheetNames.map((name: string, index: number): SelectOption<number> => ({ label: name, value: index })) }
           onChange={ (sheetIndex: number[]): void => setSelectedSheetIndex(sheetIndex[0]) }
         />
-        <Divider />
         {
           selectedSheetIndex !== -1 &&
           <>
+            <Divider />
             <Select
               title='Include Columns'
               options={ spreadsheetMetadata.sheets[selectedSheetIndex].columnNames.map((name: string): SelectOption => ({ label: name })) }
@@ -116,13 +116,13 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
               onChange={ (conditions: QueryCondition[]): void => { filterConditions.current = conditions } }
             />
             <Divider />
+            <Button
+              name='submit-query'
+              innerText='Submit'
+              onClick={ () => submitQuery(true) }
+            />
           </>
         }
-        <Button
-          name='submit-query'
-          innerText='Submit'
-          onClick={ () => submitQuery(true) }
-        />
         {
           !!queryResponse?.results.length &&
           <QueryResultList customClass='page-query-results' />
