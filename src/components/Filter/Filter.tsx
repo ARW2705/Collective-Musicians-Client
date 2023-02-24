@@ -37,7 +37,6 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
       filterPartial.current = { ...filterPartial.current, [propName]: value }
       if (Object.keys(filterPartial.current).length === 3 && isDisabled) {
         setIsDisabled(false)
-        console.log('enabling button')
       }
     }
   }
