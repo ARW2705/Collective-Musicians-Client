@@ -105,13 +105,10 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
               grid
               multi
             />
-            {
-              includeColumns.length > 0 &&
-              <p className='included-columns'>
-                <span>Including columns</span>
-                <span>{ includeColumns.join(', ') }</span>
-              </p>
-            }
+            <p className='included-columns'>
+              <span>Including columns</span>
+              <span>{ includeColumns.length > 0 ? includeColumns.join(', ') : 'ALL' }</span>
+            </p>
             <Divider />
             <FilterGroup
               onChange={ (conditions: QueryCondition[]): void => { filterConditions.current = conditions } }
