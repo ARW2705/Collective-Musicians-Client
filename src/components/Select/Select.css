@@ -1,6 +1,4 @@
 .app-select {
-  --list-item-width-internal: var(--list-item-width, auto);
-
   width: 100%;
 }
 
@@ -15,7 +13,6 @@
   padding: 10px;
   margin: 0;
   position: absolute;
-  
   border: 2px solid gray;
   border-radius: 15px;
   overflow: hidden;
@@ -41,10 +38,9 @@
 
 .app-select li {
   list-style: none;
-  padding: 10px 0;
+  padding: 10px 5px;
   margin: 0 5px;
   text-align: center;
-  min-width: var(--list-item-width-internal);
 }
 
 .app-select li:last-child {
