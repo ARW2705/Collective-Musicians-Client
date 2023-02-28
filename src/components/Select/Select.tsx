@@ -18,11 +18,11 @@ export interface SelectProps<T> {
   multi?: boolean
   openDirection?: 'up' | 'center' | 'down'
   reset?: boolean
-  rowLimit?: number
   validators?: ValidatorFn<T>[]
+  grid?: boolean
 }
 
-function SelectComponent<T>({ customClass = '', openDirection = 'down', rowLimit = 8, validators = [], reset = false, onChange: handleOnChange, multi, options, title }: SelectProps<T>): JSX.Element {
+function SelectComponent<T>({ customClass = '', openDirection = 'down', validators = [], reset = false, grid = false, onChange: handleOnChange, multi, options, title }: SelectProps<T>): JSX.Element {
   const [ displayTitle, setDisplayTitle ] = useState(title)
   const [ showList, setShowList ] = useState(false)
   const [ selected, setSelected ] = useState<number[]>([])
@@ -32,7 +32,7 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', rowLimit
   })
   const onInit = useRef<boolean>(true)
   const previousSelected = useRef<number[]>([])
-  const colCount: number = Math.ceil(options.length / rowLimit)
+  const colCount: number = grid ? Math.ceil(Math.sqrt(options.length)) : 1
 
   useEffect(() => {
     if (onInit.current) {

@@ -68,6 +68,7 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
         onChange={ (columns: string[], errors: ValidationError<string>) => onChange('column', columns[0], errors) }
         validators={ [required()] }
         reset={ reset }
+        grid
       />
       <Select
         title='Condition'
@@ -76,6 +77,7 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
         onChange={ (columns: string[], errors: ValidationError<string>) => onChange('condition', columns[0], errors) }
         validators={ [required()] }
         reset={ reset }
+        grid
       />
       <Input
         label='Target'
