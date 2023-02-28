@@ -57,8 +57,10 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', validato
       const { label, value }: SelectOption<T> = options[selected[0]]
       handleOnChange([(value ?? label) as T], errorState.errors)
       setDisplayTitle(label)
+    } else {
+      setDisplayTitle(title)
     }
-  }, [selected, multi, options, handleOnChange, errorState])
+  }, [selected, multi, options, handleOnChange, errorState, title])
 
   const handleClick = (event: MouseEvent<HTMLUListElement>) => {
     const targetIndex: number = parseInt((event.target as HTMLUListElement).getAttribute('data-index') || '')
