@@ -6,8 +6,26 @@ import Button from '../Button/Button'
 import Filter from '../Filter/Filter'
 
 import './FilterGroup.css'
-import { JsxEmit } from 'typescript'
 
+
+function buildFilterSeparator(groupKey: number): JSX.Element {
+  return (
+    <div className='group-separator' key={ `separator-${groupKey}` }>
+      <span>OR</span>
+    </div>
+  )
+}
+
+function removeFilterElementFromList(filterComponents: JSX.Element[], keyToRemove: number): JSX.Element[] {
+  const indexToRemove: number = filterComponents.findIndex(({ props }: JSX.Element): boolean => props.groupKey === keyToRemove)
+  if (indexToRemove === -1) return filterComponents
+  if (indexToRemove === 0) return filterComponents.slice(2)
+
+  return [
+    ...filterComponents.slice(0, indexToRemove - 1),
+    ...filterComponents.slice(indexToRemove + 1)
+  ]
+}
 
 export interface FilterGroupProps {
   onChange: (conditions: QueryCondition[]) => void
@@ -23,7 +41,7 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
       const { [groupKey]: value, ...remainder } = groups.current
       groups.current = remainder
       setFilterComponents((prevFilterComponents: JSX.Element[]): JSX.Element[] => (
-        prevFilterComponents.filter(({ props }: JSX.Element): boolean => props.groupKey !== groupKey)
+        removeFilterElementFromList(prevFilterComponents, groupKey)
       ))
     } else {
       groups.current = {
@@ -48,7 +66,7 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
       const groupKey = groupKeys.current
       groupKeys.current++
       if (prevFilters.length > 0) {
-        prevFilters = [...prevFilters, <div className='group-separator' key={ `separator-${groupKey}`}><span>OR</span></div>]
+        prevFilters = [...prevFilters, buildFilterSeparator(groupKey)]
       }
 
       prevFilters = [
