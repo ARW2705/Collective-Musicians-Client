@@ -62,6 +62,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
         queryParams,
         { filter: queryFilter }
       )
+      console.log(response)
       setQueryResponse(response)
     } catch (error) {
       console.log('got error trying to submit query', error)
