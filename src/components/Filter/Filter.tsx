@@ -1,7 +1,6 @@
 import React, { memo, useContext, useRef, useState } from 'react'
 
 import { QueryCondition  } from '../../models/query-condition'
-import { QueryTarget     } from '../../models/query-target'
 import { QueryArgs       } from '../../models/query-args'
 import { SingleQueryArgs } from '../../models/single-query-args'
 import { SelectOption    } from '../../models/select-option'
@@ -31,7 +30,6 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
   const [ filters, setFilters ] = useState<QueryCondition>()
   const [ reset, setReset ] = useState<boolean>(false)
   const filterPartial = useRef<{[key: string]: any}>({})
-  // const filter = useRef<QueryArgs>()
 
   const onChange = (propName: string, value: string | number, errors: ValidationError<string | number>): void => {
     if (Object.keys(errors).length > 0) {
