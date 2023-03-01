@@ -75,9 +75,14 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
     const updatedConditions: QueryArgs[] = filters[column]
       .filter((queryArgs: QueryArgs): boolean => JSON.stringify(queryArgs) !== queryStr)
 
-    filtersUpdate = {
-      ...filtersUpdate,
-      [column]: updatedConditions
+    if (updatedConditions.length === 0) {
+      const { [column]: value, ...remainder } = filtersUpdate
+      filtersUpdate = remainder
+    } else {
+      filtersUpdate = {
+        ...filtersUpdate,
+        [column]: updatedConditions
+      }
     }
 
     handleOnSubmit(filtersUpdate, groupKey)

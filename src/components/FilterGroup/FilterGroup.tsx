@@ -18,11 +18,16 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
   const groupKeys = useRef<number>(0)
 
   const handleOnSubmit = (conditions: QueryCondition, groupKey: number) => {
-    groups.current = {
-      ...groups.current,
-      [groupKey]: {
-        ...groups.current[groupKey],
-        ...conditions
+    if (Object.keys(conditions).length === 0) {
+      const { [groupKey]: value, ...remainder } = groups.current
+      groups.current = remainder
+    } else {
+      groups.current = {
+        ...groups.current,
+        [groupKey]: {
+          ...groups.current[groupKey],
+          ...conditions
+        }
       }
     }
 
