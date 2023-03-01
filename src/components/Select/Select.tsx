@@ -22,7 +22,7 @@ export interface SelectProps<T> {
   grid?: boolean
 }
 
-function SelectComponent<T>({ customClass = '', openDirection = 'down', validators = [], reset = false, grid = false, onChange: handleOnChange, multi, options, title }: SelectProps<T>): JSX.Element {
+function SelectComponent<T>({ customClass = '', openDirection = 'down', validators = [], reset = false, grid = false, multi = false, onChange: handleOnChange, options, title }: SelectProps<T>): JSX.Element {
   const [ displayTitle, setDisplayTitle ] = useState(title)
   const [ showList, setShowList ] = useState(false)
   const [ selected, setSelected ] = useState<number[]>([])
@@ -83,6 +83,7 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', validato
 
     setSelected(selections)
     setErrorState({ errors, show: Object.keys(errors).length > 0 })
+    setShowList(multi)
   }
 
   return (
