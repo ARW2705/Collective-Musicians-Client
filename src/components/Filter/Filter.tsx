@@ -1,6 +1,9 @@
 import React, { memo, useContext, useRef, useState } from 'react'
 
 import { QueryCondition  } from '../../models/query-condition'
+import { QueryTarget     } from '../../models/query-target'
+import { QueryArgs       } from '../../models/query-args'
+import { SingleQueryArgs } from '../../models/single-query-args'
 import { SelectOption    } from '../../models/select-option'
 import { ValidationError } from '../../models/validation-error'
 
@@ -28,6 +31,7 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
   const [ filters, setFilters ] = useState<QueryCondition>()
   const [ reset, setReset ] = useState<boolean>(false)
   const filterPartial = useRef<{[key: string]: any}>({})
+  // const filter = useRef<QueryArgs>()
 
   const onChange = (propName: string, value: string | number, errors: ValidationError<string | number>): void => {
     if (Object.keys(errors).length > 0) {
@@ -45,18 +49,41 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
     if (!filterPartial.current) return
 
     const { column, condition, target } = filterPartial.current
-    const queryCondition: QueryCondition = {
-      [column]: {
-        condition,
-        target
+    const queryArgs: QueryArgs = { condition, target }
+    let filtersUpdate: QueryCondition = { ...filters }
+    if (!filtersUpdate[column]) {
+      filtersUpdate = {
+        [column]: [ queryArgs ]
+      }
+    } else {
+      filtersUpdate = {
+        ...filtersUpdate,
+        [column]: [...filtersUpdate[column], queryArgs]
       }
     }
 
-    handleOnSubmit(queryCondition, groupKey)
+    handleOnSubmit(filtersUpdate, groupKey)
     filterPartial.current = {}
-    setFilters(prevFilters => ({ ...prevFilters, ...queryCondition }))
+    setFilters(prevFilters => ({ ...prevFilters, ...filtersUpdate }))
     setReset(prevProp => !prevProp)
     setIsDisabled(true)
+  }
+
+  const removeFilter = ({ column, condition, target, options }: SingleQueryArgs): void => {
+    if (!filters || !filters[column]) return
+
+    let filtersUpdate: QueryCondition = { ...filters }
+    const queryStr: string = JSON.stringify({ condition, target, options })
+    const updatedConditions: QueryArgs[] = filters[column]
+      .filter((queryArgs: QueryArgs): boolean => JSON.stringify(queryArgs) !== queryStr)
+
+    filtersUpdate = {
+      ...filtersUpdate,
+      [column]: updatedConditions
+    }
+
+    handleOnSubmit(filtersUpdate, groupKey)
+    setFilters(filtersUpdate)
   }
 
   return (
@@ -93,7 +120,10 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
         disabled={ isDisabled }
         onClick={ onSubmit }
       />
-      <FilterPreview filters={ filters } />
+      <FilterPreview
+        filters={ filters }
+        onClick={ removeFilter }
+      />
     </section>
   )
 }
