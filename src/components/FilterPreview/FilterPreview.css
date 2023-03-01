@@ -9,17 +9,17 @@
   margin: 10px;
 }
 
-.filter-preview > span {
+.filter-text {
   background-color: var(--primary-light);
-  padding: 5px;
-}
-
-.filter-preview > span:first-child {
   border-radius: 10px 0 0 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
 }
 
-.filter-preview > span:last-child {
-  border-radius: 0 10px 10px 0;
+.filter-text > span {
+  padding: 0 5px;
 }
 
 .filter-separator {
@@ -30,4 +30,15 @@
   padding: 5px;
   border-radius: 10px;
   background-color: var(--secondary-light);
+}
+
+.remove-button {
+  border-radius: 0 10px 10px 0;
+  
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+.remove-button:not(:hover) {
+  border: none;
 }
