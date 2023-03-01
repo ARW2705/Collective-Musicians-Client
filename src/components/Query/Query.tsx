@@ -50,7 +50,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
       let queryFilter: { includeColumns?: string[], conditions?: QueryCondition[] } = {}
 
       if (includeColumns.length) {
-        queryFilter = { ...queryFilter, includeColumns: includeColumns }
+        queryFilter = { ...queryFilter, includeColumns }
       }
 
       if (filterConditions.current.length) {
