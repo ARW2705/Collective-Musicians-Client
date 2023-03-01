@@ -17,7 +17,7 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
   const groups = useRef<{[key: number]: QueryCondition}>({})
   const groupKeys = useRef<number>(0)
 
-  const onSubmit = (conditions: QueryCondition, groupKey: number) => {
+  const handleOnSubmit = (conditions: QueryCondition, groupKey: number) => {
     groups.current = {
       ...groups.current,
       [groupKey]: {
@@ -30,6 +30,7 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
     for (const key in groups.current) {
       filterGroups = [...filterGroups, groups.current[key]]
     }
+
     onChange(filterGroups)
   }
     
@@ -42,7 +43,11 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
       }
       prevFilters = [
         ...prevFilters,
-        <Filter onSubmit={ onSubmit } groupKey={ groupKey } key={ prevFilters.length + 1 } />
+        <Filter
+          onSubmit={ handleOnSubmit }
+          groupKey={ groupKey }
+          key={ prevFilters.length + 1 }
+        />
       ]
       return prevFilters
     })
