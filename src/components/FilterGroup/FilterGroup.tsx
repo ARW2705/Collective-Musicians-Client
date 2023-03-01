@@ -6,6 +6,7 @@ import Button from '../Button/Button'
 import Filter from '../Filter/Filter'
 
 import './FilterGroup.css'
+import { JsxEmit } from 'typescript'
 
 
 export interface FilterGroupProps {
@@ -21,6 +22,9 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
     if (Object.keys(conditions).length === 0) {
       const { [groupKey]: value, ...remainder } = groups.current
       groups.current = remainder
+      setFilterComponents((prevFilterComponents: JSX.Element[]): JSX.Element[] => (
+        prevFilterComponents.filter(({ props }: JSX.Element): boolean => props.groupKey !== groupKey)
+      ))
     } else {
       groups.current = {
         ...groups.current,
@@ -42,16 +46,17 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
   const addFilter = (): void => {
     setFilterComponents((prevFilters: JSX.Element[]) => {
       const groupKey = groupKeys.current
-      groupKeys.current = groupKey + 1
+      groupKeys.current++
       if (prevFilters.length > 0) {
-        prevFilters = [...prevFilters, <div className='group-separator' key={ `separator-${prevFilters.length}`}><span>OR</span></div>]
+        prevFilters = [...prevFilters, <div className='group-separator' key={ `separator-${groupKey}`}><span>OR</span></div>]
       }
+
       prevFilters = [
         ...prevFilters,
         <Filter
           onSubmit={ handleOnSubmit }
           groupKey={ groupKey }
-          key={ prevFilters.length + 1 }
+          key={ groupKey }
         />
       ]
       return prevFilters
