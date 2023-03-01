@@ -117,9 +117,10 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
             <Divider />
             <Button
               name='submit-query'
-              innerText='Submit'
               onClick={ () => submitQuery(true) }
-            />
+            >
+              Submit
+            </Button>
           </>
         }
         {

@@ -90,9 +90,10 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', validato
       <Button
         name='open-select'
         onClick={ () => setShowList(true) }
-        innerText={ displayTitle }
         flat
-      />
+      >
+        { displayTitle }
+      </Button>
       {
         showList && 
         <ul

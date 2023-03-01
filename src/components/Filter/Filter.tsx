@@ -119,10 +119,11 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
       />
       <Button
         name='add-filter'
-        innerText='Add Filter'
         disabled={ isDisabled }
         onClick={ onSubmit }
-      />
+      >
+        Add Filter
+      </Button>
       <FilterPreview
         filters={ filters }
         onClick={ removeFilter }

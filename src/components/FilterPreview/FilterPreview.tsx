@@ -24,10 +24,11 @@ function buildPreviewElement(column: string, index: number, selectOption: Select
       <Button
         name='remove-filter'
         customClass='remove-button'
-        innerElement={ <FaMinusCircle /> }
         onClick={ () => handleOnClick({ column, target, condition: selectOption?.value || selectOption.label }) }
         flat
-      />
+      >
+        <FaMinusCircle />
+      </Button>
     </div>
   )
 }

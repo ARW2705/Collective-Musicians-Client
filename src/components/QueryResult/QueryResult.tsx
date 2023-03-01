@@ -52,10 +52,11 @@ function QueryResultComponent({ results }: QueryResultProps): JSX.Element {
         <Button
           name='toggle-accordion'
           customClass='accordion-button'
-          innerText={ `Show ${showAdditional ? 'Less' : 'More'}` }
           onClick={ () => setShowAdditional(prevState => !prevState) }
           flat
-        />
+        >
+          { `Show ${showAdditional ? 'Less' : 'More'}` }
+        </Button>
       </div>
       <Accordion
         element={ belowFoldElement }

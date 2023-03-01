@@ -15,12 +15,12 @@ function buildViewOptionButtons(options: ViewOption[], activeOption: string, set
       <Button
         key={ index }
         name={ name }
-        innerText={ name }
-        innerElement={ icon }
         customClass={ `view-option ${name === activeOption ? 'active' : ''}` }
         onClick={ () => setToggle(name) }
         flat
-      />
+      >
+        { icon || name }
+      </Button>
     )
   })
 }

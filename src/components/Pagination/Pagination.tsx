@@ -20,11 +20,12 @@ function PaginationComponent(): JSX.Element {
       {
         page > 1 ?
         <Button
-          innerText='Previous'
           name='previous-page'
           customClass='pagination-button'
           onClick={ () => setPage(prevPage => prevPage - 1) }
-        />
+        >
+          Previous
+        </Button>
         : <div></div>
       }
       <span>
@@ -33,11 +34,12 @@ function PaginationComponent(): JSX.Element {
       {
         page < pageCount ?
         <Button
-          innerText='Next'
           name='next-page'
           customClass='pagination-button'
           onClick={ () => setPage(prevPage => prevPage + 1) }
-        />
+        >
+          Next
+        </Button>
         : <div></div>
       }
     </div>

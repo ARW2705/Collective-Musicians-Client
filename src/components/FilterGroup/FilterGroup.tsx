@@ -86,9 +86,10 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
       <Button
         name='add-filter-group'
         customClass='add-filter-group-button'
-        innerText='Add Filter Group'
         onClick={ addFilter }
-      />
+      >
+        Add Filter Group
+      </Button>
       { filterComponents }
     </section>
   )
