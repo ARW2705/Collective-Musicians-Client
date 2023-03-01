@@ -1,20 +1,19 @@
-import React, { memo, MouseEvent } from 'react'
+import React, { memo, MouseEvent, ReactNode } from 'react'
 
 import './Button.css'
 
 
 export interface ButtonProps {
   name: string
+  children?: ReactNode
   ariaLabel?: string
   customClass?: string
   disabled?: boolean
   flat?: boolean
-  innerElement?: JSX.Element
-  innerText?: string
   onClick?: (event: MouseEvent<HTMLButtonElement>) => void
 }
 
-function ButtonComponent({ customClass = '', onClick: handleOnClick, name, ariaLabel, disabled, flat, innerElement, innerText }: ButtonProps): JSX.Element {  
+function ButtonComponent({ customClass = '', onClick: handleOnClick, name, ariaLabel, disabled, flat, children }: ButtonProps): JSX.Element {  
   return (
     <button
       aria-label={ ariaLabel || name }
@@ -23,7 +22,7 @@ function ButtonComponent({ customClass = '', onClick: handleOnClick, name, ariaL
       name={ name }
       onClick={ handleOnClick }
     >
-      { innerElement || innerText || name }
+      { children || name }
     </button>
   )
 }
