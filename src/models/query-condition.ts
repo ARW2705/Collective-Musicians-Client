@@ -1,10 +1,5 @@
-import { QueryConditionOptions } from './query-condition-options'
-import { QueryTarget } from './query-target'
+import { QueryArgs } from './query-args'
 
 export interface QueryCondition {
-  [key: string]: {
-    condition: string
-    target: QueryTarget
-    options?: QueryConditionOptions
-  }
+  [key: string]: QueryArgs[]
 }
