@@ -89,11 +89,14 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   return (
     <section className={ `query-container ${customClass}` }>
       <QueryContext.Provider value={ { columnNames, queryInProgress, queryResponse } }>
-        <Select
-          title='Select a Sheet'
-          options={ sheetNames.map((name: string, index: number): SelectOption<number> => ({ label: name, value: index })) }
-          onChange={ (sheetIndex: number[]): void => setSelectedSheetIndex(sheetIndex[0]) }
-        />
+        {
+          sheetNames.length > 0 &&
+          <Select
+            title='Select a Sheet'
+            options={ sheetNames.map((name: string, index: number): SelectOption<number> => ({ label: name, value: index })) }
+            onChange={ (sheetIndex: number[]): void => setSelectedSheetIndex(sheetIndex[0]) }
+          />
+        }
         {
           selectedSheetIndex !== -1 &&
           <>
@@ -106,20 +109,17 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
               grid
               multi
             />
-            <p className='included-columns'>
-              <span>Including columns</span>
-              <span>{ includeColumns.length > 0 ? includeColumns.join(', ') : 'ALL' }</span>
-            </p>
             <Divider />
             <FilterGroup
               onChange={ (conditions: QueryCondition[]): void => { filterConditions.current = conditions } }
+              reset={ reset }
             />
             <Divider />
             <Button
               name='submit-query'
               onClick={ () => submitQuery(true) }
             >
-              Submit
+              Submit Query
             </Button>
           </>
         }
