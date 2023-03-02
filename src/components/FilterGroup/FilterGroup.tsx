@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 
 import { QueryCondition } from '../../models/query-condition'
 
@@ -29,12 +29,14 @@ function removeFilterElementFromList(filterComponents: JSX.Element[], keyToRemov
 
 export interface FilterGroupProps {
   onChange: (conditions: QueryCondition[]) => void
+  reset?: boolean
 }
 
-function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
+function FilterGroupComponent({ reset = false, onChange: handleOnChange }: FilterGroupProps): JSX.Element {
   const [ filterComponents, setFilterComponents ] = useState<JSX.Element[]>([])
   const groups = useRef<{[key: number]: QueryCondition}>({})
   const groupKeys = useRef<number>(0)
+  const onInit = useRef<boolean>(true)
 
   const handleOnSubmit = (conditions: QueryCondition, groupKey: number) => {
     if (Object.keys(conditions).length === 0) {
@@ -58,7 +60,7 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
       filterGroups = [...filterGroups, groups.current[key]]
     }
 
-    onChange(filterGroups)
+    handleOnChange(filterGroups)
   }
     
   const addFilter = (): void => {
@@ -80,6 +82,17 @@ function FilterGroupComponent({ onChange }: FilterGroupProps): JSX.Element {
       return prevFilters
     })
   }
+
+  useEffect(() => {
+    if (onInit.current) {
+      onInit.current = false
+      return
+    }
+
+    setFilterComponents([])
+    groups.current = {}
+    groupKeys.current = 0
+  }, [reset])
 
   return (
     <section className={`filter-group-container ${filterComponents.length > 0 ? 'has-filters' : ''}`}>
