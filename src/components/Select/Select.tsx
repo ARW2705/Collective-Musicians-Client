@@ -16,23 +16,21 @@ export interface SelectProps<T> {
   title: string
   customClass?: string
   multi?: boolean
-  openDirection?: 'up' | 'center' | 'down'
   reset?: boolean
   validators?: ValidatorFn<T>[]
   grid?: boolean
 }
 
-function SelectComponent<T>({ customClass = '', openDirection = 'down', validators = [], reset = false, grid = false, multi = false, onChange: handleOnChange, options, title }: SelectProps<T>): JSX.Element {
+function SelectComponent<T>({ customClass = '', validators = [], reset = false, grid = false, multi = false, onChange: handleOnChange, options, title }: SelectProps<T>): JSX.Element {
   const [ displayTitle, setDisplayTitle ] = useState(title)
   const [ showList, setShowList ] = useState(false)
   const [ selected, setSelected ] = useState<number[]>([])
-  const [ errorState, setErrorState ] = useState<{ errors: ValidationError<T>, show: boolean }>({
-    errors: {},
-    show: false
-  })
+  const [ selectedPreview, setSelectedPreview ] = useState<JSX.Element>(<></>)
+  const [ errorState, setErrorState ] = useState<{ errors: ValidationError<T>, show: boolean }>({ errors: {}, show: false })
   const onInit = useRef<boolean>(true)
   const previousSelected = useRef<number[]>([])
   const colCount: number = grid ? Math.ceil(Math.sqrt(options.length)) : 1
+  const selectAllFlag: number = options.length
 
   useEffect(() => {
     if (onInit.current) {
@@ -49,10 +47,17 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', validato
 
     previousSelected.current = selected
     if (multi) {
-      handleOnChange(selected.map((index: number): T => {
-        const { label, value }: SelectOption<T> = options[index]
-        return (value ?? label) as T
-      }), errorState.errors)
+      let selections: T[] = []
+      if (selected.includes(selectAllFlag)) {
+        selections = options.map(({ label, value }: SelectOption<T>): T => ((value ?? label) as T))
+      } else {
+        selections = selected.map((index: number): T => {
+          const { label, value }: SelectOption<T> = options[index]
+          return (value ?? label) as T
+        })
+      }
+
+      handleOnChange(selections, errorState.errors)
     } else if (selected.length > 0) {
       const { label, value }: SelectOption<T> = options[selected[0]]
       handleOnChange([(value ?? label) as T], errorState.errors)
@@ -60,7 +65,31 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', validato
     } else {
       setDisplayTitle(title)
     }
-  }, [selected, multi, options, handleOnChange, errorState, title])
+  }, [selected, multi, options, handleOnChange, errorState, title, selectAllFlag])
+
+  useEffect(() => {
+    if (!multi) return
+
+    setSelectedPreview(
+      selected.length === 0
+      ? <></>
+      : <p className='multi-selections'>
+          <span>Selected { displayTitle }</span>
+          <span>
+            {
+              selected
+                .map((index: number): string => {
+                  if (index === selectAllFlag) return 'All Selected'
+                  if (index >= options.length) return ''
+
+                  return options[index].label
+                })
+                .join(', ')
+            }
+          </span>
+        </p>
+    )
+  }, [selected, options, multi, displayTitle, selectAllFlag])
 
   const handleClick = (event: MouseEvent<HTMLUListElement>) => {
     const targetIndex: number = parseInt((event.target as HTMLUListElement).getAttribute('data-index') || '')
@@ -87,7 +116,7 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', validato
   }
 
   return (
-    <div className={ `app-select ${openDirection !== 'center' ? 'set-position' : ''} ${customClass}` }>
+    <div className={ `app-select ${customClass}` }>
       <Button
         name='open-select'
         onClick={ () => setShowList(true) }
@@ -98,7 +127,6 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', validato
       {
         showList && 
         <ul
-          className={ `open-${openDirection}` }
           style={ { gridTemplateColumns: `repeat(${colCount}, 1fr)` } }
           onMouseLeave={ () => setShowList(false) }
           onClick={ handleClick }
@@ -114,8 +142,18 @@ function SelectComponent<T>({ customClass = '', openDirection = 'down', validato
               </li>
             ))
           }
+          {
+            multi &&
+            <li
+              data-index={ selectAllFlag }
+              className={`select-option ${selected.includes(selectAllFlag) ? 'active' : ''}`}
+            >
+              Select All
+            </li>
+          }
         </ul>
       }
+      { selectedPreview }
     </div>
   )
 }
