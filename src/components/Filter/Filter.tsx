@@ -119,6 +119,7 @@ function FilterComponent({ onSubmit: handleOnSubmit, groupKey }: FilterProps): J
       />
       <Button
         name='add-filter'
+        customClass='add-filter-button'
         disabled={ isDisabled }
         onClick={ onSubmit }
       >
