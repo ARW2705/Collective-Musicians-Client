@@ -1,0 +1,30 @@
+.bracket-container {
+  display: flex;
+}
+
+.bracket-svg-container {
+  width: 50px;
+  font-size: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.bracket-svg-container svg {
+  fill: transparent;
+  stroke: var(--gray-light);
+  stroke-linecap: round;
+  stroke-width: 4;
+}
+
+.bracket-svg-container svg:not(.stretchable-bar) {
+  min-height: 50px;
+}
+
+.stretchable-bar {
+  height: 0;
+  flex-grow: 1;
+}
+
+.bracket-label {
+  align-self: center;
+}
