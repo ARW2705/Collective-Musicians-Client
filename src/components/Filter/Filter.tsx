@@ -12,7 +12,7 @@ import './Filter.css'
 function removeFilterElementFromList(filterGroupComponents: JSX.Element[], keyToRemove: number): JSX.Element[] {
   const indexToRemove: number = filterGroupComponents.findIndex(({ props }: JSX.Element): boolean => props.groupKey === keyToRemove)
   if (indexToRemove === -1) return filterGroupComponents
-  if (indexToRemove === 0) return filterGroupComponents.slice(2)
+  if (indexToRemove === 0) return filterGroupComponents.slice(1)
 
   return [
     ...filterGroupComponents.slice(0, indexToRemove - 1),
@@ -55,7 +55,7 @@ function FilterComponent({ reset = false, onChange: handleOnChange }: FilterProp
 
     handleOnChange(filterGroups)
   }
-    
+
   const addFilter = (): void => {
     setFilterGroupComponents((prevFilters: JSX.Element[]) => {
       const groupKey = groupKeys.current
@@ -64,6 +64,7 @@ function FilterComponent({ reset = false, onChange: handleOnChange }: FilterProp
         ...prevFilters,
         <FilterGroup
           onSubmit={ handleOnSubmit }
+          onRemove={ () => handleOnSubmit({}, groupKey) }
           groupKey={ groupKey }
           key={ groupKey }
         />
@@ -91,7 +92,9 @@ function FilterComponent({ reset = false, onChange: handleOnChange }: FilterProp
         Add Filter Group
       </Button>
       <div className='filter-group-content'>
-        { filterGroupComponents }
+        <div className='filter-groups'>
+          { filterGroupComponents }
+        </div>
         { filterGroupComponents.length > 1 && <Bracket>OR</Bracket> }
       </div>
     </section>
