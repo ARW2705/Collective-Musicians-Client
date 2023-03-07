@@ -4,17 +4,10 @@ import { QueryCondition } from '../../models/query-condition'
 
 import Button from '../Button/Button'
 import Filter from '../Filter/Filter'
+import Bracket from '../Bracket/Bracket'
 
 import './FilterGroup.css'
 
-
-function buildFilterSeparator(groupKey: number): JSX.Element {
-  return (
-    <div className='group-separator' key={ `separator-${groupKey}` }>
-      <span>OR</span>
-    </div>
-  )
-}
 
 function removeFilterElementFromList(filterComponents: JSX.Element[], keyToRemove: number): JSX.Element[] {
   const indexToRemove: number = filterComponents.findIndex(({ props }: JSX.Element): boolean => props.groupKey === keyToRemove)
@@ -67,11 +60,7 @@ function FilterGroupComponent({ reset = false, onChange: handleOnChange }: Filte
     setFilterComponents((prevFilters: JSX.Element[]) => {
       const groupKey = groupKeys.current
       groupKeys.current++
-      if (prevFilters.length > 0) {
-        prevFilters = [...prevFilters, buildFilterSeparator(groupKey)]
-      }
-
-      prevFilters = [
+      return [
         ...prevFilters,
         <Filter
           onSubmit={ handleOnSubmit }
@@ -79,7 +68,6 @@ function FilterGroupComponent({ reset = false, onChange: handleOnChange }: Filte
           key={ groupKey }
         />
       ]
-      return prevFilters
     })
   }
 
@@ -103,7 +91,12 @@ function FilterGroupComponent({ reset = false, onChange: handleOnChange }: Filte
       >
         Add Filter Group
       </Button>
-      { filterComponents }
+      <div className='filter-group'>
+        <div className='filters'>
+          { filterComponents }
+        </div>
+        { filterComponents.length > 1 && <Bracket>OR</Bracket> }
+      </div>
     </section>
   )
 }
