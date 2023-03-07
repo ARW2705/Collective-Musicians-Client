@@ -1,6 +1,6 @@
 .view-toggle-container {
   display: flex;
-  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .view-option {
@@ -8,6 +8,7 @@
   color: var(--dark);
   background-color: var(--primary-light);
   border-radius: 10px 0 0 10px;
+  height: auto;
 }
 
 .view-option.active {
