@@ -22,9 +22,10 @@ import './FilterGroup.css'
 export interface FilterGroupProps {
   groupKey: number
   onSubmit: (conditions: QueryCondition, groupKey: number) => void
+  onRemove: () => void
 }
 
-function FilterGroupComponent({ onSubmit: handleOnSubmit, groupKey }: FilterGroupProps): JSX.Element {
+function FilterGroupComponent({ onSubmit: handleOnSubmit, onRemove: handleOnRemove, groupKey }: FilterGroupProps): JSX.Element {
   const { columnNames } = useContext(QueryContext)
   const [ isDisabled, setIsDisabled ] = useState<boolean>(true)
   const [ filters, setFilters ] = useState<QueryCondition>()
@@ -91,40 +92,50 @@ function FilterGroupComponent({ onSubmit: handleOnSubmit, groupKey }: FilterGrou
 
   return (
     <section className='filter-group-container'>
-      <Select
-        title='Column'
-        customClass='filter-select'
-        options={ columnNames.map((name: string): SelectOption => ({ label: name })) }
-        onChange={ (columns: string[], errors: ValidationError<string>) => onChange('column', columns[0], errors) }
-        validators={ [required()] }
-        reset={ reset }
-        grid
-      />
-      <Select
-        title='Condition'
-        customClass='filter-select'
-        options={ FILTER_CONDITION_OPTIONS }
-        onChange={ (columns: string[], errors: ValidationError<string>) => onChange('condition', columns[0], errors) }
-        validators={ [required()] }
-        reset={ reset }
-        grid
-      />
-      <Input
-        label='Target'
-        name='target'
-        type='text'
-        onChange={ onChange }
-        validators={ [required()] }
-        reset={ reset }
-      />
       <Button
-        name='add-filter'
-        customClass='add-filter-button'
-        disabled={ isDisabled }
-        onClick={ onSubmit }
+        name='remove-filter-group'
+        customClass='remove-filter-group-button'
+        onClick={ () => handleOnRemove() }
+        flat
       >
-        Add Filter
+        Remove Group
       </Button>
+      <div className='filter-controls'>
+        <Select
+          title='Column'
+          customClass='filter-select'
+          options={ columnNames.map((name: string): SelectOption => ({ label: name })) }
+          onChange={ (columns: string[], errors: ValidationError<string>) => onChange('column', columns[0], errors) }
+          validators={ [required()] }
+          reset={ reset }
+          grid
+        />
+        <Select
+          title='Condition'
+          customClass='filter-select'
+          options={ FILTER_CONDITION_OPTIONS }
+          onChange={ (columns: string[], errors: ValidationError<string>) => onChange('condition', columns[0], errors) }
+          validators={ [required()] }
+          reset={ reset }
+          grid
+        />
+        <Input
+          label='Target'
+          name='target'
+          type='text'
+          onChange={ onChange }
+          validators={ [required()] }
+          reset={ reset }
+        />
+        <Button
+          name='add-filter'
+          customClass='add-filter-button'
+          disabled={ isDisabled }
+          onClick={ onSubmit }
+        >
+          Add Filter
+        </Button>
+      </div>
       <FilterPreview
         filters={ filters }
         onClick={ removeFilter }
