@@ -1,21 +1,18 @@
 .filter-container {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 30px 10px;
-  margin: 10px 0;
-  border: 2px solid var(--gray-light);
+  flex-direction: column;
+  align-items: center;
+}
+
+.filter-group-content {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.has-filters {
+  padding: 10px;
+  border: 3px solid var(--gray-light);
   border-radius: 15px;
-}
-
-.filter-option {
-  display: inline;
-  width: 20%;
-
-  --button-width: 100%;
-}
-
-.add-filter-button {
-  height: auto;
 }

@@ -1,102 +1,134 @@
-import React, { memo, useEffect, useRef, useState } from 'react'
+import React, { memo, useContext, useRef, useState } from 'react'
 
-import { QueryCondition } from '../../models/query-condition'
+import { QueryCondition  } from '../../models/query-condition'
+import { QueryArgs       } from '../../models/query-args'
+import { SingleQueryArgs } from '../../models/single-query-args'
+import { SelectOption    } from '../../models/select-option'
+import { ValidationError } from '../../models/validation-error'
 
-import Button from '../Button/Button'
-import Filter from '../Filter/Filter'
-import Bracket from '../Bracket/Bracket'
+import { QueryContext } from '../../contexts/Query/QueryContext'
+
+import { FILTER_CONDITION_OPTIONS } from '../../shared/filter-condition-defs'
+import { required                 } from '../../shared/validation/validation'
+
+import Button        from '../Button/Button'
+import FilterPreview from '../FilterPreview/FilterPreview'
+import Input         from '../Input/Input'
+import Select        from '../Select/Select'
 
 import './FilterGroup.css'
 
 
-function removeFilterElementFromList(filterComponents: JSX.Element[], keyToRemove: number): JSX.Element[] {
-  const indexToRemove: number = filterComponents.findIndex(({ props }: JSX.Element): boolean => props.groupKey === keyToRemove)
-  if (indexToRemove === -1) return filterComponents
-  if (indexToRemove === 0) return filterComponents.slice(2)
-
-  return [
-    ...filterComponents.slice(0, indexToRemove - 1),
-    ...filterComponents.slice(indexToRemove + 1)
-  ]
-}
-
 export interface FilterGroupProps {
-  onChange: (conditions: QueryCondition[]) => void
-  reset?: boolean
+  groupKey: number
+  onSubmit: (conditions: QueryCondition, groupKey: number) => void
 }
 
-function FilterGroupComponent({ reset = false, onChange: handleOnChange }: FilterGroupProps): JSX.Element {
-  const [ filterComponents, setFilterComponents ] = useState<JSX.Element[]>([])
-  const groups = useRef<{[key: number]: QueryCondition}>({})
-  const groupKeys = useRef<number>(0)
-  const onInit = useRef<boolean>(true)
+function FilterGroupComponent({ onSubmit: handleOnSubmit, groupKey }: FilterGroupProps): JSX.Element {
+  const { columnNames } = useContext(QueryContext)
+  const [ isDisabled, setIsDisabled ] = useState<boolean>(true)
+  const [ filters, setFilters ] = useState<QueryCondition>()
+  const [ reset, setReset ] = useState<boolean>(false)
+  const filterPartial = useRef<{[key: string]: any}>({})
 
-  const handleOnSubmit = (conditions: QueryCondition, groupKey: number) => {
-    if (Object.keys(conditions).length === 0) {
-      const { [groupKey]: value, ...remainder } = groups.current
-      groups.current = remainder
-      setFilterComponents((prevFilterComponents: JSX.Element[]): JSX.Element[] => (
-        removeFilterElementFromList(prevFilterComponents, groupKey)
-      ))
+  const onChange = (propName: string, value: string | number, errors: ValidationError<string | number>): void => {
+    if (Object.keys(errors).length > 0) {
+      delete filterPartial.current[propName]
+      setIsDisabled(true)
     } else {
-      groups.current = {
-        ...groups.current,
-        [groupKey]: {
-          ...groups.current[groupKey],
-          ...conditions
-        }
+      filterPartial.current = { ...filterPartial.current, [propName]: value }
+      if (Object.keys(filterPartial.current).length === 3 && isDisabled) {
+        setIsDisabled(false)
+      }
+    }
+  }
+
+  const onSubmit = (): void => {
+    if (!filterPartial.current) return
+
+    const { column, condition, target } = filterPartial.current
+    const queryArgs: QueryArgs = { condition, target }
+    let filtersUpdate: QueryCondition = { ...filters }
+    if (!filtersUpdate[column]) {
+      filtersUpdate = {
+        [column]: [ queryArgs ]
+      }
+    } else {
+      filtersUpdate = {
+        ...filtersUpdate,
+        [column]: [...filtersUpdate[column], queryArgs]
       }
     }
 
-    let filterGroups: QueryCondition[] = []
-    for (const key in groups.current) {
-      filterGroups = [...filterGroups, groups.current[key]]
-    }
-
-    handleOnChange(filterGroups)
-  }
-    
-  const addFilter = (): void => {
-    setFilterComponents((prevFilters: JSX.Element[]) => {
-      const groupKey = groupKeys.current
-      groupKeys.current++
-      return [
-        ...prevFilters,
-        <Filter
-          onSubmit={ handleOnSubmit }
-          groupKey={ groupKey }
-          key={ groupKey }
-        />
-      ]
-    })
+    handleOnSubmit(filtersUpdate, groupKey)
+    filterPartial.current = {}
+    setFilters(prevFilters => ({ ...prevFilters, ...filtersUpdate }))
+    setReset(prevProp => !prevProp)
+    setIsDisabled(true)
   }
 
-  useEffect(() => {
-    if (onInit.current) {
-      onInit.current = false
-      return
+  const removeFilter = ({ column, condition, target, options }: SingleQueryArgs): void => {
+    if (!filters || !filters[column]) return
+
+    let filtersUpdate: QueryCondition = { ...filters }
+    const queryStr: string = JSON.stringify({ condition, target, options })
+    const updatedConditions: QueryArgs[] = filters[column]
+      .filter((queryArgs: QueryArgs): boolean => JSON.stringify(queryArgs) !== queryStr)
+
+    if (updatedConditions.length === 0) {
+      const { [column]: value, ...remainder } = filtersUpdate
+      filtersUpdate = remainder
+    } else {
+      filtersUpdate = {
+        ...filtersUpdate,
+        [column]: updatedConditions
+      }
     }
 
-    setFilterComponents([])
-    groups.current = {}
-    groupKeys.current = 0
-  }, [reset])
+    handleOnSubmit(filtersUpdate, groupKey)
+    setFilters(filtersUpdate)
+  }
 
   return (
-    <section className={`filter-group-container ${filterComponents.length > 0 ? 'has-filters' : ''}`}>
+    <section className='filter-group-container'>
+      <Select
+        title='Column'
+        customClass='filter-select'
+        options={ columnNames.map((name: string): SelectOption => ({ label: name })) }
+        onChange={ (columns: string[], errors: ValidationError<string>) => onChange('column', columns[0], errors) }
+        validators={ [required()] }
+        reset={ reset }
+        grid
+      />
+      <Select
+        title='Condition'
+        customClass='filter-select'
+        options={ FILTER_CONDITION_OPTIONS }
+        onChange={ (columns: string[], errors: ValidationError<string>) => onChange('condition', columns[0], errors) }
+        validators={ [required()] }
+        reset={ reset }
+        grid
+      />
+      <Input
+        label='Target'
+        name='target'
+        type='text'
+        onChange={ onChange }
+        validators={ [required()] }
+        reset={ reset }
+      />
       <Button
-        name='add-filter-group'
-        customClass='add-filter-group-button'
-        onClick={ addFilter }
+        name='add-filter'
+        customClass='add-filter-button'
+        disabled={ isDisabled }
+        onClick={ onSubmit }
       >
-        Add Filter Group
+        Add Filter
       </Button>
-      <div className='filter-group'>
-        <div className='filters'>
-          { filterComponents }
-        </div>
-        { filterComponents.length > 1 && <Bracket>OR</Bracket> }
-      </div>
+      <FilterPreview
+        filters={ filters }
+        onClick={ removeFilter }
+      />
     </section>
   )
 }

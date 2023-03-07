@@ -17,7 +17,7 @@ import { QueryContext      } from '../../contexts/Query/QueryContext'
 
 import Button          from '../Button/Button'
 import Divider         from '../Divider/Divider'
-import FilterGroup     from '../FilterGroup/FilterGroup'
+import Filter          from '../Filter/Filter'
 import QueryResultList from '../QueryResultList/QueryResultList'
 import Select          from '../Select/Select'
 
@@ -110,7 +110,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
               multi
             />
             <Divider />
-            <FilterGroup
+            <Filter
               onChange={ (conditions: QueryCondition[]): void => { filterConditions.current = conditions } }
               reset={ reset }
             />
