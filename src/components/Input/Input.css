@@ -47,7 +47,6 @@ input[type=number] {
   box-shadow: 0 3px 5px var(--primary-light);
   background-image: none;
   font-size: var(--small-font-size-internal);
-  min-height: calc(48px - 1.5rem);
 }
 
 input:focus-visible {
