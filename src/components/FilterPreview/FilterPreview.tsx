@@ -9,6 +9,7 @@ import { SelectOption   } from '../../models/select-option'
 import { FILTER_CONDITION_OPTIONS } from '../../shared/filter-condition-defs'
 
 import Button from '../Button/Button'
+import Bracket from '../Bracket/Bracket'
 
 import './FilterPreview.css'
 
@@ -51,15 +52,6 @@ function FilterPreviewComponent({ filters, onClick: handleOnClick }: FilterPrevi
         throw new Error(`Select option of ${key} is not valid`)
       }
 
-      if (flattenedIndex > 0) {
-        previews = [
-          ...previews,
-          <div className='filter-separator' key={ flattenedIndex }>
-            <span>AND</span>
-          </div>
-        ]
-      }
-
       previews = [...previews, buildPreviewElement(key, flattenedIndex, selectOption, queryArgs.target, handleOnClick)]
       flattenedIndex++
     }
@@ -67,7 +59,10 @@ function FilterPreviewComponent({ filters, onClick: handleOnClick }: FilterPrevi
 
   return (
     <div className='filter-preview-container'>
-      { previews }
+      <div className='preview-container'>
+        { previews }
+      </div>
+      { previews.length > 1 && <Bracket>AND</Bracket> }
     </div>
   )
 }
