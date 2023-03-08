@@ -4,16 +4,29 @@ import { SelectOption    } from '../../models/select-option'
 import { ValidatorFn     } from '../../models/validator-function'
 import { ValidationError } from '../../models/validation-error'
 import { validate        } from '../../shared/validation/validate'
+import compare             from '../../shared/shallow-compare'
 
 import Button from '../Button/Button'
 
 import './Select.css'
 
 
+function getMultiSelections<T>(selected: number[], selectAllFlag: number, options: SelectOption<T>[]) {
+  if (selected.includes(selectAllFlag)) {
+    return options.map(({ label, value }: SelectOption<T>): T => ((value ?? label) as T))
+  }
+
+  return selected.map((index: number): T => {
+    const { label, value }: SelectOption<T> = options[index]
+    return (value ?? label) as T
+  })
+}
+
 export interface SelectProps<T> {
   onChange: (values: T[], errors: ValidationError<T>) => void
   options: SelectOption<T>[]
   title: string
+  defaultSelections?: number[]
   customClass?: string
   multi?: boolean
   reset?: boolean
@@ -21,43 +34,38 @@ export interface SelectProps<T> {
   grid?: boolean
 }
 
-function SelectComponent<T>({ customClass = '', validators = [], reset = false, grid = false, multi = false, onChange: handleOnChange, options, title }: SelectProps<T>): JSX.Element {
+function SelectComponent<T>({ customClass = '', validators = [], reset = false, grid = false, multi = false, defaultSelections = [], onChange: handleOnChange, options, title }: SelectProps<T>): JSX.Element {
   const [ displayTitle, setDisplayTitle ] = useState(title)
   const [ showList, setShowList ] = useState(false)
-  const [ selected, setSelected ] = useState<number[]>([])
+  const [ selected, setSelected ] = useState<number[]>(defaultSelections)
   const [ selectedPreview, setSelectedPreview ] = useState<JSX.Element>(<></>)
   const [ errorState, setErrorState ] = useState<{ errors: ValidationError<T>, show: boolean }>({ errors: {}, show: false })
-  const onInit = useRef<boolean>(true)
   const previousSelected = useRef<number[]>([])
-  const colCount: number = grid ? Math.ceil(Math.sqrt(options.length)) : 1
+  const previousOptions = useRef<SelectOption<T>[]>()
+  const resetLatch = useRef<boolean>(reset)
   const selectAllFlag: number = options.length
 
   useEffect(() => {
-    if (onInit.current) {
-      onInit.current = false
-      return
-    }
+    if (resetLatch.current === reset) return
 
+    resetLatch.current = reset
     setSelected([])
     setErrorState({ errors: {}, show: false })
   }, [reset])
 
   useEffect(() => {
-    if (JSON.stringify(selected) === JSON.stringify(previousSelected.current)) return
+    if (!compare(previousOptions.current, options)) {
+      setSelected(defaultSelections)
+      previousOptions.current = options
+    }
+  }, [options, defaultSelections])
+
+  useEffect(() => {
+    if (compare(previousSelected.current, selected)) return
 
     previousSelected.current = selected
     if (multi) {
-      let selections: T[] = []
-      if (selected.includes(selectAllFlag)) {
-        selections = options.map(({ label, value }: SelectOption<T>): T => ((value ?? label) as T))
-      } else {
-        selections = selected.map((index: number): T => {
-          const { label, value }: SelectOption<T> = options[index]
-          return (value ?? label) as T
-        })
-      }
-
-      handleOnChange(selections, errorState.errors)
+      handleOnChange(getMultiSelections(selected, selectAllFlag, options), errorState.errors)
     } else if (selected.length > 0) {
       const { label, value }: SelectOption<T> = options[selected[0]]
       handleOnChange([(value ?? label) as T], errorState.errors)
@@ -76,16 +84,16 @@ function SelectComponent<T>({ customClass = '', validators = [], reset = false, 
       : <p className='multi-selections'>
           <span>Selected { displayTitle }</span>
           <span>
-            {
-              selected
-                .map((index: number): string => {
-                  if (index === selectAllFlag) return 'All Selected'
-                  if (index >= options.length) return ''
+          {
+            selected
+              .map((index: number): string => {
+                if (index === selectAllFlag) return 'All Selected'
+                if (index >= options.length) return ''
 
-                  return options[index].label
-                })
-                .join(', ')
-            }
+                return options[index].label
+              })
+              .join(', ')
+          }
           </span>
         </p>
     )
@@ -127,7 +135,7 @@ function SelectComponent<T>({ customClass = '', validators = [], reset = false, 
       {
         showList && 
         <ul
-          style={ { gridTemplateColumns: `repeat(${colCount}, 1fr)` } }
+          style={ { gridTemplateColumns: `repeat(${grid ? Math.ceil(Math.sqrt(options.length)) : 1}, 1fr)` } }
           onMouseLeave={ () => setShowList(false) }
           onClick={ handleClick }
         >
