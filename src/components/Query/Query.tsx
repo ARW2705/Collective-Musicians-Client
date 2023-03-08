@@ -105,7 +105,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
               title='Include Columns'
               options={ spreadsheetMetadata.sheets[selectedSheetIndex].columnNames.map((name: string): SelectOption => ({ label: name })) }
               onChange={ (columns: string[]): void => setIncludeColumns(columns) }
-              reset={ reset }
+              defaultSelections={ [spreadsheetMetadata.sheets[selectedSheetIndex].columnNames.length] }
               grid
               multi
             />
