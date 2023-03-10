@@ -1,0 +1,16 @@
+.multi-selections {
+  width: 50%;
+  padding: 10px;
+  border: 2px solid var(--gray-light);
+  border-radius: 10px;
+  margin: 5px auto 0;
+  text-align: center;
+}
+
+.multi-selections span:first-child {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 10px;
+  font-weight: bold;
+  text-align: center;
+}
