@@ -1,0 +1,35 @@
+.select-options-list {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  background-color: var(--light);
+  padding: 10px;
+  margin: 0;
+  position: absolute;
+  border: 2px solid gray;
+  border-radius: 15px;
+  overflow: hidden;
+  z-index: 100;
+  list-style: none;
+  top: -2px;
+}
+
+.select-option {
+  list-style: none;
+  padding: 10px 5px;
+  margin: 0 5px;
+  text-align: center;
+  min-width: 100px;
+}
+
+.select-option:last-child {
+  border: none;
+}
+
+.select-option:hover {
+  background-color: var(--primary-light);
+}
+
+.select-option.active {
+  color: var(--light);
+  background-color: var(--primary);
+}
