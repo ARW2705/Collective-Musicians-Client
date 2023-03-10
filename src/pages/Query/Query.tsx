@@ -7,7 +7,8 @@ import store from '../../state/store'
 
 import { PaginationContext } from '../../contexts/Pagination/PaginationContext'
 
-import Query from '../../components/Query/Query'
+import Loader from '../../components/Loaders/Loader'
+import Query  from '../../components/Query/Query'
 
 // import Search from '../../components/Search/Search'
 
@@ -35,6 +36,12 @@ function QueryPage(): JSX.Element {
 // />
   return (
     <div id='query-page' className='route'>
+      <Loader
+        show={ !spreadsheetMetadata.id }
+        type='bar'
+        color='primary'
+        blocking
+      />
       <h2>{ spreadsheetMetadata.name }</h2>
       <PaginationContext.Provider value={ { page, setPage, pageLimit, setPageLimit } }>
         <Query
