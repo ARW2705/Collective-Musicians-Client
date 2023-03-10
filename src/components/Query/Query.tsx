@@ -18,6 +18,7 @@ import { QueryContext      } from '../../contexts/Query/QueryContext'
 import Button          from '../Button/Button'
 import Divider         from '../Divider/Divider'
 import Filter          from '../Filter/Filter'
+import Loader          from '../Loaders/Loader'
 import QueryResultList from '../QueryResultList/QueryResultList'
 import Select          from '../Select/Select'
 
@@ -45,6 +46,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   const submitQuery = useCallback(async (submit?: boolean): Promise<void> => {
     if (!submit) return
 
+    setQueryInProgress(true)
     try {
       let queryParams: QueryParams = { sheetName: sheetNames[selectedSheetIndex], page, limit: pageLimit }
       let queryFilter: { includeColumns?: string[], conditions?: QueryCondition[] } = {}
@@ -66,6 +68,8 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
       setQueryResponse(response)
     } catch (error) {
       console.log('got error trying to submit query', error)
+    } finally {
+      setQueryInProgress(false)
     }
   }, [page, pageLimit, sheetNames, selectedSheetIndex, includeColumns])
 
@@ -118,11 +122,18 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
             <Button
               name='submit-query'
               onClick={ () => submitQuery(true) }
+              disabled={ queryInProgress }
             >
               Submit Query
             </Button>
           </>
         }
+        <Loader
+          show={ queryInProgress }
+          type='bar'
+          color='primary'
+          customClass='query-in-progress'
+        />
         {
           !!queryResponse?.results.length &&
           <QueryResultList customClass='page-query-results' />
