@@ -1,5 +1,8 @@
+#app-router-container {
+  position: relative;
+}
+
 #app-router-content {
   min-height: calc(100vh - var(--header-height) - var(--footer-height));
-  position: relative;
   overflow-y: scroll;
 }
