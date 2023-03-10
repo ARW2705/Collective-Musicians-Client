@@ -1,12 +1,15 @@
-import React, { MouseEvent, useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
+import { SelectContext   } from '../../contexts/Select/SelectContext'
 import { SelectOption    } from '../../models/select-option'
 import { ValidatorFn     } from '../../models/validator-function'
 import { ValidationError } from '../../models/validation-error'
 import { validate        } from '../../shared/validation/validate'
 import compare             from '../../shared/shallow-compare'
 
-import Button from '../Button/Button'
+import Button        from '../Button/Button'
+import SelectPreview from '../SelectPreview/SelectPreview'
+import SelectOptions from '../SelectOptions/SelectOptions'
 
 import './Select.css'
 
@@ -38,7 +41,6 @@ function SelectComponent<T>({ customClass = '', validators = [], reset = false, 
   const [ displayTitle, setDisplayTitle ] = useState(title)
   const [ showList, setShowList ] = useState(false)
   const [ selected, setSelected ] = useState<number[]>(defaultSelections)
-  const [ selectedPreview, setSelectedPreview ] = useState<JSX.Element>(<></>)
   const [ errorState, setErrorState ] = useState<{ errors: ValidationError<T>, show: boolean }>({ errors: {}, show: false })
   const previousSelected = useRef<number[]>([])
   const previousOptions = useRef<SelectOption<T>[]>()
@@ -75,32 +77,7 @@ function SelectComponent<T>({ customClass = '', validators = [], reset = false, 
     }
   }, [selected, multi, options, handleOnChange, errorState, title, selectAllFlag])
 
-  useEffect(() => {
-    if (!multi) return
-
-    setSelectedPreview(
-      selected.length === 0
-      ? <></>
-      : <p className='multi-selections'>
-          <span>Selected { displayTitle }</span>
-          <span>
-          {
-            selected
-              .map((index: number): string => {
-                if (index === selectAllFlag) return 'All Selected'
-                if (index >= options.length) return ''
-
-                return options[index].label
-              })
-              .join(', ')
-          }
-          </span>
-        </p>
-    )
-  }, [selected, options, multi, displayTitle, selectAllFlag])
-
-  const handleClick = (event: MouseEvent<HTMLUListElement>) => {
-    const targetIndex: number = parseInt((event.target as HTMLUListElement).getAttribute('data-index') || '')
+  const handleClick = (targetIndex: number): void => {
     if (isNaN(targetIndex)) return
 
     let errors: ValidationError<T>
@@ -125,43 +102,26 @@ function SelectComponent<T>({ customClass = '', validators = [], reset = false, 
 
   return (
     <div className={ `app-select ${customClass}` }>
-      <Button
-        name='open-select'
-        onClick={ () => setShowList(true) }
-        flat
-      >
-        { displayTitle }
-      </Button>
-      {
-        showList && 
-        <ul
-          style={ { gridTemplateColumns: `repeat(${grid ? Math.ceil(Math.sqrt(options.length)) : 1}, 1fr)` } }
-          onMouseLeave={ () => setShowList(false) }
-          onClick={ handleClick }
+      <SelectContext.Provider value={ {
+        showList,
+        setShowList,
+        displayTitle,
+        options,
+        selected,
+        selectAllFlag,
+        grid,
+        multi
+      } }>
+        <Button
+          name='open-select'
+          onClick={ () => setShowList(true) }
+          flat
         >
-          {
-            options.map((option: SelectOption<T>, index: number): JSX.Element => (
-              <li
-                key={ index }
-                data-index={ index }
-                className={`select-option ${selected.includes(index) ? 'active' : ''}`}
-              >
-                { option.label }
-              </li>
-            ))
-          }
-          {
-            multi &&
-            <li
-              data-index={ selectAllFlag }
-              className={`select-option ${selected.includes(selectAllFlag) ? 'active' : ''}`}
-            >
-              Select All
-            </li>
-          }
-        </ul>
-      }
-      { selectedPreview }
+          { displayTitle }
+        </Button>
+        <SelectOptions onClick={ handleClick }/>
+        <SelectPreview show={ multi }/>
+      </SelectContext.Provider>
     </div>
   )
 }
