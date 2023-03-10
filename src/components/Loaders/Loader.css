@@ -1,0 +1,6 @@
+.loader-container {
+  width: 150px;
+  background-color: var(--background-color);
+  border-radius: 15px;
+  padding: 5px;
+}
