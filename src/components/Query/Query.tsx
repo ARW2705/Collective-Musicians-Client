@@ -43,6 +43,11 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   const filterConditions = useRef<QueryCondition[]>([])
   const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
 
+  const clearQuery = (): void => {
+    setQueryResponse(undefined)
+    setReset(prevProps => !prevProps)
+  }
+
   const submitQuery = useCallback(async (submit?: boolean): Promise<void> => {
     if (!submit) return
 
@@ -110,6 +115,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
               options={ spreadsheetMetadata.sheets[selectedSheetIndex].columnNames.map((name: string): SelectOption => ({ label: name })) }
               onChange={ (columns: string[]): void => setIncludeColumns(columns) }
               defaultSelections={ [spreadsheetMetadata.sheets[selectedSheetIndex].columnNames.length] }
+              reset={ reset }
               grid
               multi
             />
@@ -126,6 +132,14 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
             >
               Submit Query
             </Button>
+            { !!queryResponse?.results.length &&
+              <Button
+                name='clear-query'
+                onClick={ () => clearQuery() }
+              >
+                Clear Query
+              </Button>
+            }
           </>
         }
         <Loader

@@ -85,16 +85,16 @@ function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
   const [ errorState, setErrorState ] = useState<ErrorState<T>>({ errors: {}, show: false })
   const previousSelected = useRef<number[]>([])
   const previousOptions = useRef<SelectOption<T>[]>()
-  const resetLatch = useRef<boolean>(reset)
+  const resetLatch = useRef<boolean>(!reset)
   const selectAllFlag: number = options.length
 
   useEffect(() => {
     if (resetLatch.current === reset) return
 
     resetLatch.current = reset
-    setSelected([])
+    setSelected(multi ? [selectAllFlag] : [])
     setErrorState({ errors: {}, show: false })
-  }, [reset])
+  }, [reset, multi, selectAllFlag])
 
   useEffect(() => {
     if (!compare(previousOptions.current, options)) {
