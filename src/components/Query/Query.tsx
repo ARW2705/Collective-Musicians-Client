@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useReducer, useRef } from 'react'
 import { useSelector } from 'react-redux'
 
 import { QueryCondition } from '../../models/query-condition'
@@ -22,6 +22,7 @@ import Loader          from '../Loaders/Loader'
 import QueryResultList from '../QueryResultList/QueryResultList'
 import Select          from '../Select/Select'
 
+import { reducer, initialState, QueryAction } from './query-reducer'
 import './Query.css'
 
 
@@ -34,30 +35,20 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   const { spreadsheetMetadata } = store.getState()
   const sheetNames: string[] = useSelector(selectSheetNames)
   const { page, pageLimit } = useContext(PaginationContext)
-  const [ selectedSheetIndex, setSelectedSheetIndex ] = useState<number>(-1)
-  const [ columnNames, setColumnNames ] = useState<string[]>([])
-  const [ includeColumns, setIncludeColumns ] = useState<string[]>([])
-  const [ queryResponse, setQueryResponse ] = useState<QueryResponse>()
-  const [ queryInProgress, setQueryInProgress ] = useState<boolean>(false)
-  const [ reset, setReset ] = useState<boolean>(false)
+  const [ state, dispatch ] = useReducer(reducer, initialState)
   const filterConditions = useRef<QueryCondition[]>([])
   const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
-
-  const clearQuery = (): void => {
-    setQueryResponse(undefined)
-    setReset(prevProps => !prevProps)
-  }
 
   const submitQuery = useCallback(async (submit?: boolean): Promise<void> => {
     if (!submit) return
 
-    setQueryInProgress(true)
+    dispatch({ type: QueryAction.SET_QUERY_IN_PROGRESS, payload: true })
     try {
-      let queryParams: QueryParams = { sheetName: sheetNames[selectedSheetIndex], page, limit: pageLimit }
+      let queryParams: QueryParams = { sheetName: sheetNames[state.selectedSheetIndex], page, limit: pageLimit }
       let queryFilter: { includeColumns?: string[], conditions?: QueryCondition[] } = {}
 
-      if (includeColumns.length) {
-        queryFilter = { ...queryFilter, includeColumns }
+      if (state.includeColumns.length) {
+        queryFilter = { ...queryFilter, includeColumns: state.includeColumns }
       }
 
       if (filterConditions.current.length) {
@@ -70,24 +61,13 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
         { filter: queryFilter }
       )
       console.log(response)
-      setQueryResponse(response)
+      dispatch({ type: QueryAction.SET_QUERY_RESPONSE, payload: response })
     } catch (error) {
       console.log('got error trying to submit query', error)
     } finally {
-      setQueryInProgress(false)
+      dispatch({ type: QueryAction.SET_QUERY_IN_PROGRESS, payload: false })
     }
-  }, [page, pageLimit, sheetNames, selectedSheetIndex, includeColumns])
-
-  useEffect(() => {
-    setQueryResponse(undefined)
-  }, [selectedSheetIndex])
-
-  useEffect(() => {
-    if (selectedSheetIndex !== -1) {
-      setReset(prevProps => !prevProps)
-      setColumnNames(spreadsheetMetadata.sheets[selectedSheetIndex].columnNames)
-    }
-  }, [spreadsheetMetadata, selectedSheetIndex])
+  }, [page, pageLimit, sheetNames, state])
 
   useEffect(() => {
     const { page: prevPage, pageLimit: prevPageLimit } = previousPage.current
@@ -97,45 +77,45 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
 
   return (
     <section className={ `query-container ${customClass}` }>
-      <QueryContext.Provider value={ { columnNames, queryInProgress, queryResponse } }>
+      {
+        sheetNames.length > 0 &&
+        <Select
+          title='Select a Sheet'
+          options={ sheetNames.map((name: string, index: number): SelectOption<number> => ({ label: name, value: index })) }
+          onChange={ (sheetIndex: number[]): void => dispatch({ type: QueryAction.SET_SHEET_INDEX, payload: sheetIndex[0] }) }
+        />
+      }
+      <QueryContext.Provider value={ { columnNames: state.selectedSheetIndex === -1 ? [] : spreadsheetMetadata.sheets[state.selectedSheetIndex].columnNames, queryInProgress: state.queryInProgress, queryResponse: state.queryResponse } }>
         {
-          sheetNames.length > 0 &&
-          <Select
-            title='Select a Sheet'
-            options={ sheetNames.map((name: string, index: number): SelectOption<number> => ({ label: name, value: index })) }
-            onChange={ (sheetIndex: number[]): void => setSelectedSheetIndex(sheetIndex[0]) }
-          />
-        }
-        {
-          selectedSheetIndex !== -1 &&
+          state.selectedSheetIndex !== -1 &&
           <>
             <Divider />
             <Select
               title='Include Columns'
-              options={ spreadsheetMetadata.sheets[selectedSheetIndex].columnNames.map((name: string): SelectOption => ({ label: name })) }
-              onChange={ (columns: string[]): void => setIncludeColumns(columns) }
-              defaultSelections={ [spreadsheetMetadata.sheets[selectedSheetIndex].columnNames.length] }
-              reset={ reset }
+              options={ spreadsheetMetadata.sheets[state.selectedSheetIndex].columnNames.map((name: string): SelectOption => ({ label: name })) }
+              onChange={ (columns: string[]): void => dispatch({ type: QueryAction.SET_INCLUDE_COLUMNS, payload: columns }) }
+              defaultSelections={ [spreadsheetMetadata.sheets[state.selectedSheetIndex].columnNames.length] }
+              reset={ state.reset }
               grid
               multi
             />
             <Divider />
             <Filter
               onChange={ (conditions: QueryCondition[]): void => { filterConditions.current = conditions } }
-              reset={ reset }
+              reset={ state.reset }
             />
             <Divider />
             <Button
               name='submit-query'
               onClick={ () => submitQuery(true) }
-              disabled={ queryInProgress }
+              disabled={ state.queryInProgress }
             >
               Submit Query
             </Button>
-            { !!queryResponse?.results.length &&
+            { !!state.queryResponse?.results.length &&
               <Button
                 name='clear-query'
-                onClick={ () => clearQuery() }
+                onClick={ () => dispatch({ type: QueryAction.SET_QUERY_RESPONSE, payload: undefined }) }
               >
                 Clear Query
               </Button>
@@ -143,15 +123,12 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
           </>
         }
         <Loader
-          show={ queryInProgress }
+          show={ state.queryInProgress }
           type='bar'
           color='primary'
           customClass='query-in-progress'
         />
-        {
-          !!queryResponse?.results.length &&
-          <QueryResultList customClass='page-query-results' />
-        }
+        <QueryResultList customClass='page-query-results' />
       </QueryContext.Provider>
     </section>
   )
