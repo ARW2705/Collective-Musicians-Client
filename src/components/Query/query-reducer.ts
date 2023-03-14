@@ -29,7 +29,7 @@ export const initialState: QueryState = {
   reset: false
 }
 
-export function reducer(state: QueryState, action: ReducerAction<QueryPayload, QueryAction>): QueryState {
+function reducer(state: QueryState, action: ReducerAction<QueryPayload, QueryAction>): QueryState {
   switch (action.type) {
     case QueryAction.SET_SHEET_INDEX:
       const index: number = action.payload as number
@@ -57,3 +57,5 @@ export function reducer(state: QueryState, action: ReducerAction<QueryPayload, Q
       return state
   }
 }
+
+export default reducer
