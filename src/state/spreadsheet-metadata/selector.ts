@@ -13,8 +13,15 @@ function selectSheet({ spreadsheetMetadata }: { spreadsheetMetadata: Spreadsheet
   return sheet
 }
 
+function selectColumnNames({ spreadsheetMetadata }: { spreadsheetMetadata: SpreadsheetMetadata }, selectedSheetIndex: number): string[] {
+  if (selectedSheetIndex < 0 || selectedSheetIndex >= spreadsheetMetadata.sheets.length) return []
+
+  return spreadsheetMetadata.sheets[selectedSheetIndex].columnNames
+}
+
 
 export {
   selectSheetNames,
-  selectSheet
+  selectSheet,
+  selectColumnNames
 }
