@@ -10,7 +10,8 @@ import './Pagination.css'
 
 function PaginationComponent(): JSX.Element {
   const { page, setPage, pageLimit } = useContext(PaginationContext)
-  const { queryResponse } = useContext(QueryContext)
+  const { state } = useContext(QueryContext)
+  const { queryResponse } = state
   if (!queryResponse) return <></>
 
   const pageCount = Math.ceil(queryResponse.resultCount / pageLimit)
