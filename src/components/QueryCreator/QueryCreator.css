@@ -1,0 +1,16 @@
+.query-creator-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0 10px;
+  padding: 2%;
+}
+
+.page-query-results {
+  width: 100%;
+}
+
+.query-in-progress {
+  width: 150px;
+  margin: 10px calc(50% - 75px);
+}
