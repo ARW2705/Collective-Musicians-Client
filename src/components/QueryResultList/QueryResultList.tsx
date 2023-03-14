@@ -15,7 +15,8 @@ export interface QueryResultListProps {
 }
 
 function QueryResultListComponent({ customClass = '' }: QueryResultListProps): JSX.Element {
-  const { queryResponse } = useContext(QueryContext)
+  const { state } = useContext(QueryContext)
+  const { queryResponse } = state
   if (!queryResponse) return <></>
 
   const results: JSX.Element[] = queryResponse.results
