@@ -1,5 +1,7 @@
 import React, { memo, useContext, useRef, useState } from 'react'
-
+import { useSelector } from 'react-redux'
+import { RootState } from '../../state/store'
+import { selectColumnNames } from '../../state/spreadsheet-metadata/selector'
 import { QueryCondition  } from '../../models/query-condition'
 import { QueryArgs       } from '../../models/query-args'
 import { SingleQueryArgs } from '../../models/single-query-args'
@@ -26,7 +28,8 @@ export interface FilterGroupProps {
 }
 
 function FilterGroupComponent({ onSubmit: handleOnSubmit, onRemove: handleOnRemove, groupKey }: FilterGroupProps): JSX.Element {
-  const { columnNames } = useContext(QueryContext)
+  const { state } = useContext(QueryContext)
+  const columnNames: string[] = useSelector((rootState: RootState) => selectColumnNames(rootState, state.selectedSheetIndex))
   const [ isDisabled, setIsDisabled ] = useState<boolean>(true)
   const [ filters, setFilters ] = useState<QueryCondition>()
   const [ reset, setReset ] = useState<boolean>(false)
