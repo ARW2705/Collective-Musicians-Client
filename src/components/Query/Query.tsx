@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useReducer, useRef } from 'react'
 import { useSelector } from 'react-redux'
 
+import { QueryAction       } from '../../actions/query'
 import { PaginationContext } from '../../contexts/Pagination/PaginationContext'
 import { QueryContext      } from '../../contexts/Query/QueryContext'
 import { query             } from '../../http/client'
@@ -14,7 +15,7 @@ import Loader          from '../Loaders/Loader'
 import QueryCreator    from '../QueryCreator/QueryCreator'
 import QueryResultList from '../QueryResultList/QueryResultList'
 
-import reducer, { initialState, QueryAction } from './query-reducer'
+import reducer, { initialState } from './query-reducer'
 import './Query.css'
 
 
