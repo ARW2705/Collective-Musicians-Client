@@ -5,9 +5,7 @@ import { Loader } from '../../../../models/loader'
 import './BarSpinner.css'
 
 
-export interface BarSpinnerProps extends Loader {
-
-}
+export interface BarSpinnerProps extends Loader {}
 
 function BarSpinnerComponent({ color = '', customClass = '', speed = 1000, size = 150 }: BarSpinnerProps): JSX.Element {
   const lineCount: number = 8;

@@ -1,24 +1,20 @@
 import React, { useCallback, useContext, useEffect, useReducer, useRef } from 'react'
 import { useSelector } from 'react-redux'
 
-import { QueryCondition } from '../../models/query-condition'
-import { QueryParams    } from '../../models/query-params'
-import { QueryResponse  } from '../../models/query-response'
-import { SearchParams   } from '../../models/search-params'
-
-import { query } from '../../http/client'
-
-import { selectSheetNames } from '../../state/spreadsheet-metadata/selector'
-
 import { PaginationContext } from '../../contexts/Pagination/PaginationContext'
 import { QueryContext      } from '../../contexts/Query/QueryContext'
+import { query             } from '../../http/client'
+import { QueryCondition    } from '../../models/query-condition'
+import { QueryParams       } from '../../models/query-params'
+import { QueryResponse     } from '../../models/query-response'
+import { SearchParams      } from '../../models/search-params'
+import { selectSheetNames  } from '../../state/spreadsheet-metadata/selector'
 
 import Loader          from '../Loaders/Loader'
 import QueryCreator    from '../QueryCreator/QueryCreator'
 import QueryResultList from '../QueryResultList/QueryResultList'
 
 import reducer, { initialState, QueryAction } from './query-reducer'
-
 import './Query.css'
 
 

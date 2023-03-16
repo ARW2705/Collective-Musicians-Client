@@ -2,9 +2,9 @@ import React, { memo, useEffect, useRef, useState } from 'react'
 
 import { QueryCondition } from '../../models/query-condition'
 
+import Bracket     from '../Bracket/Bracket'
 import Button      from '../Button/Button'
 import FilterGroup from '../FilterGroup/FilterGroup'
-import Bracket     from '../Bracket/Bracket'
 
 import './Filter.css'
 

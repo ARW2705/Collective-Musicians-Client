@@ -1,8 +1,9 @@
 import { createContext, Dispatch, MutableRefObject } from 'react'
 
-import { QueryCondition } from '../../models/query-condition'
-import { ReducerAction } from '../../models/reducer-action'
 import { QueryPayload, QueryState, QueryAction, initialState } from '../../components/Query/query-reducer'
+import { QueryCondition                                      } from '../../models/query-condition'
+import { ReducerAction                                       } from '../../models/reducer-action'
+
 
 export interface QueryContextProps {
   sheetNames: string[]

@@ -1,5 +1,5 @@
+import { SheetMetadata       } from '../../models/sheet-metadata'
 import { SpreadsheetMetadata } from '../../models/spreadsheet-metadata'
-import { SheetMetadata } from '../../models/sheet-metadata'
 
 
 function selectSheetNames({ spreadsheetMetadata }: { spreadsheetMetadata: SpreadsheetMetadata }): string[] {

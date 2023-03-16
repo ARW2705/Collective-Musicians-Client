@@ -3,8 +3,7 @@ import React, { ChangeEvent, FocusEvent, useEffect, useRef, useState } from 'rea
 import { TouchStatus     } from '../../models/touch-status'
 import { ValidationError } from '../../models/validation-error'
 import { ValidatorFn     } from '../../models/validator-function'
-
-import { validate } from '../../shared/validation/validation'
+import { validate        } from '../../shared/validation/validation'
 
 import './Input.css'
 

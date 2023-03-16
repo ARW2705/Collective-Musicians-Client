@@ -1,5 +1,5 @@
-import { ValidatorFn } from '../../models/validator-function'
 import { ValidationError } from '../../models/validation-error'
+import { ValidatorFn     } from '../../models/validator-function'
 
 
 export function required(): ValidatorFn<any> {

@@ -1,8 +1,7 @@
 import React, { memo, useContext } from 'react'
 
-import { QueryResult } from '../../models/query-result'
-
 import { QueryContext } from '../../contexts/Query/QueryContext'
+import { QueryResult  } from '../../models/query-result'
 
 import Pagination           from '../Pagination/Pagination'
 import QueryResultComponent from '../QueryResult/QueryResult'
