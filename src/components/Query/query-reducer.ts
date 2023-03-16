@@ -1,3 +1,4 @@
+import { QueryAction    } from '../../actions/query'
 import { QueryResponse  } from '../../models/query-response'
 import { ReducerAction  } from '../../models/reducer-action'
 
@@ -8,15 +9,6 @@ export interface QueryState {
   queryResponse: QueryResponse | undefined
   queryInProgress: boolean
   reset: boolean
-}
-
-export enum QueryAction {
-  SET_SHEET_INDEX = 'SET_SHEET_INDEX',
-  SET_INCLUDE_COLUMNS = 'SET_INCLUDE_COLUMNS',
-  SET_QUERY_RESPONSE = 'SET_QUERY_RESPONSE',
-  SET_QUERY_IN_PROGRESS = 'SET_QUERY_IN_PROGRESS',
-  TOGGLE_RESET = 'TOGGLE_RESET',
-  CLEAR = 'CLEAR'
 }
 
 export type QueryPayload = number | string[] | QueryResponse | boolean | undefined
