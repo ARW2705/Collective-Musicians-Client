@@ -43,7 +43,7 @@ function SelectOptionsComponent<T>({ onClick: handleOnClick }: SelectOptionsProp
             data-index={ selectAllFlag }
             className={`select-option ${selected.includes(selectAllFlag) ? 'active' : ''}`}
           >
-            Select All
+            SELECT ALL
           </li>
         }
       </ul>
