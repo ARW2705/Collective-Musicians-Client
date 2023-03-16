@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-import { SelectContext   } from '../../contexts/Select/SelectContext'
+import { SelectContext   } from '../../contexts/select'
 import { ErrorState      } from '../../models/error-state'
 import { SelectOption    } from '../../models/select-option'
 import { ValidatorFn     } from '../../models/validator-function'

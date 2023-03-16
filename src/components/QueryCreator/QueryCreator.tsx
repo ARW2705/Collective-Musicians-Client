@@ -2,7 +2,7 @@ import React, { memo, useContext } from 'react'
 import { useSelector } from 'react-redux'
 
 import { QueryAction       } from '../../actions/query'
-import { QueryContext      } from '../../contexts/Query/QueryContext'
+import { QueryContext      } from '../../contexts/query'
 import { QueryCondition    } from '../../models/query-condition'
 import { SelectOption      } from '../../models/select-option'
 import { selectColumnNames } from '../../state/spreadsheet-metadata/selector'

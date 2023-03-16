@@ -1,9 +1,9 @@
 import { createContext, Dispatch, MutableRefObject } from 'react'
 
-import { QueryAction                            } from '../../actions/query'
-import { QueryPayload, QueryState, initialState } from '../../components/Query/query-reducer'
-import { QueryCondition                         } from '../../models/query-condition'
-import { ReducerAction                          } from '../../models/reducer-action'
+import { QueryAction                            } from '../actions/query'
+import { QueryPayload, QueryState, initialState } from '../components/Query/query-reducer'
+import { QueryCondition                         } from '../models/query-condition'
+import { ReducerAction                          } from '../models/reducer-action'
 
 
 export interface QueryContextProps {

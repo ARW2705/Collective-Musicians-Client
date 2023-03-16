@@ -2,8 +2,8 @@ import React, { useCallback, useContext, useEffect, useReducer, useRef } from 'r
 import { useSelector } from 'react-redux'
 
 import { QueryAction       } from '../../actions/query'
-import { PaginationContext } from '../../contexts/Pagination/PaginationContext'
-import { QueryContext      } from '../../contexts/Query/QueryContext'
+import { PaginationContext } from '../../contexts/pagination'
+import { QueryContext      } from '../../contexts/query'
 import { query             } from '../../http/client'
 import { QueryCondition    } from '../../models/query-condition'
 import { QueryParams       } from '../../models/query-params'

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { PaginationContext   } from '../../contexts/Pagination/PaginationContext'
+import { PaginationContext   } from '../../contexts/pagination'
 import { SearchParams        } from '../../models/search-params'
 import { SpreadsheetMetadata } from '../../models/spreadsheet-metadata'
 import store                   from '../../state/store'

@@ -1,6 +1,6 @@
 import React, { memo, useContext } from 'react'
 
-import { SelectContext } from '../../contexts/Select/SelectContext'
+import { SelectContext } from '../../contexts/select'
 
 import './SelectPreview.css'
 
