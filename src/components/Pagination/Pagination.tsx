@@ -1,7 +1,7 @@
 import React, { memo, useContext } from 'react'
 
-import { PaginationContext } from '../../contexts/Pagination/PaginationContext'
-import { QueryContext      } from '../../contexts/Query/QueryContext'
+import { PaginationContext } from '../../contexts/pagination'
+import { QueryContext      } from '../../contexts/query'
 
 import Button from '../Button/Button'
 

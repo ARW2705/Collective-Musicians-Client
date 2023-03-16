@@ -1,6 +1,6 @@
 import { createContext, Dispatch, SetStateAction } from 'react'
 
-import { SelectOption } from '../../models/select-option'
+import { SelectOption } from '../models/select-option'
 
 
 export interface SelectContextProps<T> {

@@ -1,7 +1,7 @@
 import React, { memo, useContext, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { QueryContext             } from '../../contexts/Query/QueryContext'
+import { QueryContext             } from '../../contexts/query'
 import { QueryCondition           } from '../../models/query-condition'
 import { QueryArgs                } from '../../models/query-args'
 import { SelectOption             } from '../../models/select-option'

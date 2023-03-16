@@ -1,6 +1,6 @@
 import React, { memo, MouseEvent, useContext } from 'react'
 
-import { SelectContext } from '../../contexts/Select/SelectContext'
+import { SelectContext } from '../../contexts/select'
 import { SelectOption  } from '../../models/select-option'
 
 import './SelectOptions.css'
@@ -43,7 +43,7 @@ function SelectOptionsComponent<T>({ onClick: handleOnClick }: SelectOptionsProp
             data-index={ selectAllFlag }
             className={`select-option ${selected.includes(selectAllFlag) ? 'active' : ''}`}
           >
-            Select All
+            SELECT ALL
           </li>
         }
       </ul>

@@ -1,17 +1,17 @@
 import React, { memo, useContext } from 'react'
 import { useSelector } from 'react-redux'
 
-import { QueryContext      } from '../../contexts/Query/QueryContext'
+import { QueryAction       } from '../../actions/query'
+import { QueryContext      } from '../../contexts/query'
 import { QueryCondition    } from '../../models/query-condition'
 import { SelectOption      } from '../../models/select-option'
 import { selectColumnNames } from '../../state/spreadsheet-metadata/selector'
 import { RootState         } from '../../state/store'
 
-import Button          from '../Button/Button'
-import Divider         from '../Divider/Divider'
-import Filter          from '../Filter/Filter'
-import { QueryAction } from '../Query/query-reducer'
-import Select          from '../Select/Select'
+import Button  from '../Button/Button'
+import Divider from '../Divider/Divider'
+import Filter  from '../Filter/Filter'
+import Select  from '../Select/Select'
 
 import './QueryCreator.css'
 
