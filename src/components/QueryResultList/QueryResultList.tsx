@@ -1,8 +1,7 @@
 import React, { memo, useContext } from 'react'
 
-import { QueryResult } from '../../models/query-result'
-
 import { QueryContext } from '../../contexts/Query/QueryContext'
+import { QueryResult  } from '../../models/query-result'
 
 import Pagination           from '../Pagination/Pagination'
 import QueryResultComponent from '../QueryResult/QueryResult'
@@ -15,7 +14,8 @@ export interface QueryResultListProps {
 }
 
 function QueryResultListComponent({ customClass = '' }: QueryResultListProps): JSX.Element {
-  const { queryResponse } = useContext(QueryContext)
+  const { state } = useContext(QueryContext)
+  const { queryResponse } = state
   if (!queryResponse) return <></>
 
   const results: JSX.Element[] = queryResponse.results

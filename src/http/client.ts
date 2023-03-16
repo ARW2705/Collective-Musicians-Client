@@ -1,8 +1,8 @@
 import axios, { AxiosRequestConfig } from 'axios'
 
+import { QueryFilter  } from '../models/query-filter'
+import { QueryParams  } from '../models/query-params'
 import { QueryRequest } from '../models/query-request'
-import { QueryParams } from '../models/query-params'
-import { QueryFilter } from '../models/query-filter'
 
 import intercept from './interceptors/intercept'
 

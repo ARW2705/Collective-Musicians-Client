@@ -40,14 +40,17 @@ function getMultiSelections<T>(selected: number[], selectAllFlag: number, option
  * 
  * @param selected - the currently selected indices
  * @param targetIndex - the index to change; if the index already exists, remove it, otherwise add to the end of the array
- * @return array of indices
+ * @param selectAllFlag - index that denotes if all options should be selected
+ * @return array of selected indices
  */
-function getMultiSelectIndices(selected: number[], targetIndex: number): number[] {
-  const currentSelectedIndex: number = selected.findIndex(selectedIndex => (
-    selectedIndex === targetIndex
-  ))
-  if (currentSelectedIndex === -1) return [...selected, targetIndex]
-  return remove(selected, currentSelectedIndex)
+function getMultiSelectIndices(selected: number[], targetIndex: number, selectAllFlag: number): number[] {
+  const currentSelectedIndex: number = selected.findIndex(selectedIndex => (selectedIndex === targetIndex))
+  if (currentSelectedIndex !== -1) return remove(selected, currentSelectedIndex)
+
+  const selectAllIndex: number = selected.findIndex(selectedIndex => (selectedIndex === selectAllFlag))
+  if (targetIndex === selectAllFlag) return [targetIndex]
+  if (selectAllIndex === -1) return [...selected, targetIndex]
+  return [...remove(selected, selectAllIndex), targetIndex]
 }
 
 
@@ -82,16 +85,16 @@ function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
   const [ errorState, setErrorState ] = useState<ErrorState<T>>({ errors: {}, show: false })
   const previousSelected = useRef<number[]>([])
   const previousOptions = useRef<SelectOption<T>[]>()
-  const resetLatch = useRef<boolean>(reset)
+  const resetLatch = useRef<boolean>(!reset)
   const selectAllFlag: number = options.length
 
   useEffect(() => {
     if (resetLatch.current === reset) return
 
     resetLatch.current = reset
-    setSelected([])
+    setSelected(multi ? [selectAllFlag] : [])
     setErrorState({ errors: {}, show: false })
-  }, [reset])
+  }, [reset, multi, selectAllFlag])
 
   useEffect(() => {
     if (!compare(previousOptions.current, options)) {
@@ -130,7 +133,7 @@ function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
     let errors: ValidationError<T>
     let selections: number[] = selected
     if (multi) {
-      selections = getMultiSelectIndices(selected, targetIndex)
+      selections = getMultiSelectIndices(selected, targetIndex, selectAllFlag)
       errors = validate<T>(selections as T, validators)
     } else {
       selections = [targetIndex]

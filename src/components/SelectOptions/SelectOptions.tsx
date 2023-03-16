@@ -1,7 +1,7 @@
 import React, { memo, MouseEvent, useContext } from 'react'
 
-import { SelectOption } from '../../models/select-option'
 import { SelectContext } from '../../contexts/Select/SelectContext'
+import { SelectOption  } from '../../models/select-option'
 
 import './SelectOptions.css'
 

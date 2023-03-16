@@ -5,7 +5,6 @@ import { ViewOption } from '../../models/view-option'
 import ViewToggle from '../ViewToggle/ViewToggle'
 
 import { buildDataView } from './build-view-element'
-
 import './ToggleableView.css'
 
 

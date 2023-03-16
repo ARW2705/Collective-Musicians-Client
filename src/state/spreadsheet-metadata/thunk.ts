@@ -1,7 +1,9 @@
-import { SpreadsheetMetadata } from '../../models/spreadsheet-metadata'
-import { get } from '../../http/client'
-import { set } from './slice'
 import { Dispatch } from 'redux'
+
+import { get                 } from '../../http/client'
+import { SpreadsheetMetadata } from '../../models/spreadsheet-metadata'
+
+import { set } from './slice'
 
 
 function setSpreadsheetMetadata() {

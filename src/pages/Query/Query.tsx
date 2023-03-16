@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
-import { SpreadsheetMetadata } from '../../models/spreadsheet-metadata'
+import { PaginationContext   } from '../../contexts/Pagination/PaginationContext'
 import { SearchParams        } from '../../models/search-params'
-
-import store from '../../state/store'
-
-import { PaginationContext } from '../../contexts/Pagination/PaginationContext'
+import { SpreadsheetMetadata } from '../../models/spreadsheet-metadata'
+import store                   from '../../state/store'
 
 import Loader from '../../components/Loaders/Loader'
 import Query  from '../../components/Query/Query'
-
-// import Search from '../../components/Search/Search'
 
 import './Query.css'
 
@@ -30,10 +26,6 @@ function QueryPage(): JSX.Element {
     return () => unsubscribe()
   }, [])
 
-  //   <Search
-//   customClass='page-search-section'
-//   onSubmit={ (search: SearchParams) => setSearchParams(search) }
-// />
   return (
     <div id='query-page' className='route'>
       <Loader

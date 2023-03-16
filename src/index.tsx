@@ -4,11 +4,8 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider as ReduxProvider } from 'react-redux'
 
 import reportWebVitals from './reportWebVitals'
-
-import store from './state/store'
-
 import AppRouter from './routing/router/AppRouter'
-
+import store from './state/store'
 import './styles/global.css'
 
 

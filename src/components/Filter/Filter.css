@@ -11,6 +11,10 @@
   flex-wrap: nowrap;
 }
 
+.filter-groups {
+  width: 100%;
+}
+
 .has-filters {
   padding: 10px;
   border: 3px solid var(--gray-light);
