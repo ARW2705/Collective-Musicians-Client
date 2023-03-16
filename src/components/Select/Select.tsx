@@ -17,15 +17,15 @@ import './Select.css'
 
 
 /**
- * Generate an array of values to be accepted as the user's selected values
+ * Generate an array of values to be accepted as the user's selections
  * 
  * @param selected - array of indices selected by the user
  * @param selectAllFlag - index that indicates all values should be selected
  * @param options - array of select options
  * @return array of normalized user selected values
  */
-function getMultiSelections<T>(selected: number[], selectAllFlag: number, options: SelectOption<T>[]): T[] {
-  if (selected.includes(selectAllFlag)) {
+function getMultiUserSelections<T>(selected: number[], selectAllFlag: number, options: SelectOption<T>[]): T[] {
+  if (selected[0] === selectAllFlag) {
     return options.map(({ label, value }: SelectOption<T>): T => ((value ?? label) as T))
   }
 
@@ -36,21 +36,25 @@ function getMultiSelections<T>(selected: number[], selectAllFlag: number, option
 }
 
 /**
- * Generate an array of selected option indices
+ * Generate an array of selected option indices based on 
  * 
  * @param selected - the currently selected indices
- * @param targetIndex - the index to change; if the index already exists, remove it, otherwise add to the end of the array
+ * @param targetIndex - the index to toggle; if the index is the select all flag, only select that index;
+ *                      if not the select all flag, add the index if it doesn't exist, otherwise add to the array
  * @param selectAllFlag - index that denotes if all options should be selected
  * @return array of selected indices
  */
-function getMultiSelectIndices(selected: number[], targetIndex: number, selectAllFlag: number): number[] {
-  const currentSelectedIndex: number = selected.findIndex(selectedIndex => (selectedIndex === targetIndex))
-  if (currentSelectedIndex !== -1) return remove(selected, currentSelectedIndex)
+function toggleMultiSelection(selected: number[], targetIndex: number, selectAllFlag: number): number[] {
+  if (targetIndex === selectAllFlag) return [selectAllFlag]
 
-  const selectAllIndex: number = selected.findIndex(selectedIndex => (selectedIndex === selectAllFlag))
-  if (targetIndex === selectAllFlag) return [targetIndex]
-  if (selectAllIndex === -1) return [...selected, targetIndex]
-  return [...remove(selected, selectAllIndex), targetIndex]
+  const currentSelectedIndex: number = selected.findIndex(selectedIndex => (selectedIndex === targetIndex))
+  if (currentSelectedIndex !== -1) {
+    const newSelections: number[] = remove(selected, currentSelectedIndex)
+    return newSelections.length > 0 ? newSelections : [selectAllFlag]
+  }
+
+  if (selected[0] === selectAllFlag) return [targetIndex]
+  return [...selected, targetIndex]
 }
 
 
@@ -108,7 +112,7 @@ function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
 
     previousSelected.current = selected
     if (multi) {
-      handleOnChange(getMultiSelections(selected, selectAllFlag, options), errorState.errors)
+      handleOnChange(getMultiUserSelections(selected, selectAllFlag, options), errorState.errors)
     } else if (selected.length > 0) {
       const { label, value }: SelectOption<T> = options[selected[0]]
       handleOnChange([(value ?? label) as T], errorState.errors)
@@ -133,7 +137,7 @@ function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
     let errors: ValidationError<T>
     let selections: number[] = selected
     if (multi) {
-      selections = getMultiSelectIndices(selected, targetIndex, selectAllFlag)
+      selections = toggleMultiSelection(selected, targetIndex, selectAllFlag)
       errors = validate<T>(selections as T, validators)
     } else {
       selections = [targetIndex]
