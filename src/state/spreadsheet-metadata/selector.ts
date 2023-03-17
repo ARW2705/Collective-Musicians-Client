@@ -1,6 +1,6 @@
+import { SheetContext        } from '../../models/sheet-context'
 import { SheetMetadata       } from '../../models/sheet-metadata'
 import { SpreadsheetMetadata } from '../../models/spreadsheet-metadata'
-
 
 function selectSheetNames({ spreadsheetMetadata }: { spreadsheetMetadata: SpreadsheetMetadata }): string[] {
   return spreadsheetMetadata.sheets.map((sheet: SheetMetadata) => sheet.name)
@@ -19,9 +19,14 @@ function selectColumnNames({ spreadsheetMetadata }: { spreadsheetMetadata: Sprea
   return spreadsheetMetadata.sheets[selectedSheetIndex].columnNames
 }
 
+function selectContextSheet({ spreadsheetMetadata }: { spreadsheetMetadata: SpreadsheetMetadata }): SheetContext {
+  return spreadsheetMetadata.contextSheet
+}
+
 
 export {
   selectSheetNames,
   selectSheet,
-  selectColumnNames
+  selectColumnNames,
+  selectContextSheet
 }
