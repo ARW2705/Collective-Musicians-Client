@@ -6,7 +6,8 @@ import { SpreadsheetMetadata } from '../../models/spreadsheet-metadata'
 const initialState: SpreadsheetMetadata = {
   id: null,
   name: null,
-  sheets: []
+  sheets: [],
+  contextSheet: null
 }
 
 export const spreadsheetMetadataSlice = createSlice({
