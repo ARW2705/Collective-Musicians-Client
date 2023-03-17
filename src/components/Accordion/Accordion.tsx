@@ -1,18 +1,18 @@
-import React, { memo } from 'react'
+import React, { memo, ReactNode } from 'react'
 
 import './Accordion.css'
 
 
 export interface AccordionProps {
-  element: JSX.Element | JSX.Element[]
+  children: ReactNode
   show: boolean
   customClass?: string
 }
 
-function AccordionComponent({ element, show, customClass = '' }: AccordionProps): JSX.Element {
+function AccordionComponent({ children, show, customClass = '' }: AccordionProps): JSX.Element {
   return (
     <div className={ `accordion-container ${customClass} ${show ? 'expand' : 'collapse'}` }>
-      { element }
+      { children }
     </div>
   )
 }
