@@ -1,15 +1,19 @@
 import React, { useCallback, useContext, useEffect, useReducer, useRef } from 'react'
 import { useSelector } from 'react-redux'
 
-import { QueryAction       } from '../../actions/query'
-import { PaginationContext } from '../../contexts/pagination'
-import { QueryContext      } from '../../contexts/query'
-import { query             } from '../../http/client'
-import { QueryCondition    } from '../../models/query-condition'
-import { QueryParams       } from '../../models/query-params'
-import { QueryResponse     } from '../../models/query-response'
-import { SearchParams      } from '../../models/search-params'
-import { selectSheetNames  } from '../../state/spreadsheet-metadata/selector'
+import { QueryAction        } from '../../actions/query'
+import { PaginationContext  } from '../../contexts/pagination'
+import { QueryContext       } from '../../contexts/query'
+import { query              } from '../../http/client'
+import { QueryCondition     } from '../../models/query-condition'
+import { QueryParams        } from '../../models/query-params'
+import { QueryResponse      } from '../../models/query-response'
+import { SearchParams       } from '../../models/search-params'
+import { SheetContext       } from '../../models/sheet-context'
+import { SheetContextProps  } from '../../models/sheet-context-props'
+import { remove             } from '../../shared/remove-at'
+import { selectContextSheet } from '../../state/spreadsheet-metadata/selector'
+import { selectSheetNames   } from '../../state/spreadsheet-metadata/selector'
 
 import Loader          from '../Loaders/Loader'
 import QueryCreator    from '../QueryCreator/QueryCreator'
@@ -19,6 +23,21 @@ import reducer, { initialState } from './query-reducer'
 import './Query.css'
 
 
+/**
+ * Configured the selected columns to be included with a query
+ * 
+ * @param selectedColumns - user selected columns
+ * @param [identifier] - optional sheet defined column to include
+ * @return array of selected columns with the identifier column as the first element if it exists
+ */
+function configureIncludeColumns(selectedColumns: string[], identifier?: string): string[] {
+  if (!identifier) return selectedColumns
+
+  const identifierIndex: number = selectedColumns.findIndex(column => column === identifier)
+  if (identifierIndex === -1) return [identifier, ...selectedColumns]
+  return [identifier, ...remove(selectedColumns, identifierIndex)]
+}
+
 export interface QueryProps {
   customClass?: string
   searchParams?: SearchParams
@@ -26,6 +45,7 @@ export interface QueryProps {
 
 function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Element {
   const sheetNames: string[] = useSelector(selectSheetNames)
+  const contextSheet: SheetContext = useSelector(selectContextSheet)
   const { page, pageLimit } = useContext(PaginationContext)
   const [ state, dispatch ] = useReducer(reducer, initialState)
   const filterConditions = useRef<QueryCondition[]>([])
@@ -37,10 +57,14 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
     dispatch({ type: QueryAction.SET_QUERY_IN_PROGRESS, payload: true })
     try {
       let queryParams: QueryParams = { sheetName: sheetNames[state.selectedSheetIndex], page, limit: pageLimit }
-      let queryFilter: { includeColumns?: string[], conditions?: QueryCondition[] } = {}
+      const identifierColumn: SheetContextProps | undefined = contextSheet[sheetNames[state.selectedSheetIndex]]
+      const configuredIncludeColumns: string[] = configureIncludeColumns(
+        state.includeColumns,
+        identifierColumn?.userFocusedIdentifier
+      )
 
-      if (state.includeColumns.length) {
-        queryFilter = { ...queryFilter, includeColumns: state.includeColumns }
+      let queryFilter: { includeColumns: string[], conditions?: QueryCondition[] } = {
+        includeColumns: configuredIncludeColumns
       }
 
       if (filterConditions.current.length) {
@@ -59,7 +83,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
     } finally {
       dispatch({ type: QueryAction.SET_QUERY_IN_PROGRESS, payload: false })
     }
-  }, [page, pageLimit, sheetNames, state])
+  }, [page, pageLimit, sheetNames, state, contextSheet])
 
   useEffect(() => {
     const { page: prevPage, pageLimit: prevPageLimit } = previousPage.current
