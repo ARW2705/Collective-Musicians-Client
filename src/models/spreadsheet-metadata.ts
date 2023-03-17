@@ -5,5 +5,5 @@ export interface SpreadsheetMetadata {
   id: string | null
   name: string | null
   sheets: SheetMetadata[]
-  contextSheet: SheetContext | null
+  contextSheet: SheetContext
 }

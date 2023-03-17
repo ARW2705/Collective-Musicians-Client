@@ -7,7 +7,7 @@ const initialState: SpreadsheetMetadata = {
   id: null,
   name: null,
   sheets: [],
-  contextSheet: null
+  contextSheet: {}
 }
 
 export const spreadsheetMetadataSlice = createSlice({

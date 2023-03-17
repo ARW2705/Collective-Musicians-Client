@@ -1,4 +1,5 @@
+import { SheetContextProps } from './sheet-context-props'
+
 export interface SheetContext {
-  userFocusedIdentifier: string
-  internalSheetSpecificIdentifier: string
+  [key: string]: SheetContextProps
 }
