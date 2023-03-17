@@ -63,10 +63,11 @@ function QueryResultComponent({ results }: QueryResultProps): JSX.Element {
         </Button>
       </div>
       <Accordion
-        element={ belowFoldElement }
         show={ showAdditional }
         customClass='query-result-remainder'
-      />
+      >
+        { belowFoldElement }
+      </Accordion>
     </div>
   )
 }
