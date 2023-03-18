@@ -1,4 +1,4 @@
-/* .pagination-container {
+.pagination-button-container {
   display: grid;
   grid-template-columns: 
     [col-1] auto
@@ -24,7 +24,7 @@
   grid-column: col-4;
 }
 
-.pagination-container span {
+.pagination-button-container span {
   font-size: 1.25rem;
   grid-column: col-3;
-} */
+}

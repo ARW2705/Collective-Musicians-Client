@@ -1,4 +1,4 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import { FaListUl, FaTable } from 'react-icons/fa'
 
 import { QueryResult } from '../../models/query-result'
@@ -17,6 +17,10 @@ export interface QueryResultProps {
 
 function QueryResultComponent({ results }: QueryResultProps): JSX.Element {
   const [ showAdditional, setShowAdditional ] = useState<boolean>(false)
+
+  useEffect(() => {
+    setShowAdditional(false)
+  }, [results])
   
   const keys: string[] = Object.keys(results)
   let aboveFoldElement: JSX.Element = <span>Missing Results</span>
@@ -59,10 +63,11 @@ function QueryResultComponent({ results }: QueryResultProps): JSX.Element {
         </Button>
       </div>
       <Accordion
-        element={ belowFoldElement }
         show={ showAdditional }
         customClass='query-result-remainder'
-      />
+      >
+        { belowFoldElement }
+      </Accordion>
     </div>
   )
 }

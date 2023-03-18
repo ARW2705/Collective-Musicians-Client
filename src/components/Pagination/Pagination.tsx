@@ -1,50 +1,24 @@
-import React, { memo, useContext } from 'react'
+import React, { memo } from 'react'
 
-import { PaginationContext } from '../../contexts/pagination'
-import { QueryContext      } from '../../contexts/query'
-
-import Button from '../Button/Button'
+import PaginationButton from './PaginationComponents/Button/PaginationButton'
+import PaginationPip    from './PaginationComponents/Pip/PaginationPip'
 
 import './Pagination.css'
 
 
-function PaginationComponent(): JSX.Element {
-  const { page, setPage, pageLimit } = useContext(PaginationContext)
-  const { state } = useContext(QueryContext)
-  const { queryResponse } = state
-  if (!queryResponse) return <></>
+export interface PaginationProps {
+  type?: string
+}
 
-  const pageCount = Math.ceil(queryResponse.resultCount / pageLimit)
-
-  return (
-    <div className='pagination-container'>
-      {
-        page > 1 ?
-        <Button
-          name='previous-page'
-          customClass='pagination-button'
-          onClick={ () => setPage(prevPage => prevPage - 1) }
-        >
-          Previous
-        </Button>
-        : <div></div>
-      }
-      <span>
-        Page { page } of { pageCount }
-      </span>
-      {
-        page < pageCount ?
-        <Button
-          name='next-page'
-          customClass='pagination-button'
-          onClick={ () => setPage(prevPage => prevPage + 1) }
-        >
-          Next
-        </Button>
-        : <div></div>
-      }
-    </div>
-  )
+function PaginationComponent({ type = 'button' }: PaginationProps): JSX.Element {
+  switch (type) {
+    case 'button':
+      return <PaginationButton />
+    case 'pip':
+      return <PaginationPip />
+    default:
+      return <></>
+  }
 }
 
 
