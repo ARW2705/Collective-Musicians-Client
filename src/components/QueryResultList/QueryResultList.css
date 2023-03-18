@@ -1,3 +1,7 @@
+.query-results-container {
+  width: 100%;
+}
+
 .query-results-content {
   border: 3px solid var(--gray-light);
   border-radius: 10px;

@@ -14,6 +14,7 @@ import './Query.css'
 function QueryPage(): JSX.Element {
   const [ page, setPage ] = useState<number>(1)
   const [ pageLimit, setPageLimit ] = useState<number>(5)
+  const [ pageCount, setPageCount ] = useState<number>(1)
   const [searchParams, setSearchParams] = useState<SearchParams>()
   const { spreadsheetMetadata: initialSpreadsheetMetadata } = store.getState()
   const [ spreadsheetMetadata, setSpreadsheetMetadata ] = useState<SpreadsheetMetadata>(initialSpreadsheetMetadata)
@@ -35,7 +36,7 @@ function QueryPage(): JSX.Element {
         blocking
       />
       <h2>{ spreadsheetMetadata.name }</h2>
-      <PaginationContext.Provider value={ { page, setPage, pageLimit, setPageLimit } }>
+      <PaginationContext.Provider value={ { page, setPage, pageLimit, setPageLimit, pageCount, setPageCount } }>
         <Query
           customClass='page-query-section'
           searchParams={ searchParams }

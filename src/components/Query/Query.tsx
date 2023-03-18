@@ -15,7 +15,6 @@ import { remove             } from '../../shared/remove-at'
 import { selectContextSheet } from '../../state/spreadsheet-metadata/selector'
 import { selectSheetNames   } from '../../state/spreadsheet-metadata/selector'
 
-import Loader          from '../Loaders/Loader'
 import QueryCreator    from '../QueryCreator/QueryCreator'
 import QueryResultList from '../QueryResultList/QueryResultList'
 
@@ -46,7 +45,7 @@ export interface QueryProps {
 function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Element {
   const sheetNames: string[] = useSelector(selectSheetNames)
   const contextSheet: SheetContext = useSelector(selectContextSheet)
-  const { page, pageLimit } = useContext(PaginationContext)
+  const { page, pageLimit, setPageCount } = useContext(PaginationContext)
   const [ state, dispatch ] = useReducer(reducer, initialState)
   const filterConditions = useRef<QueryCondition[]>([])
   const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
@@ -77,13 +76,14 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
         { filter: queryFilter }
       )
       console.log(response)
+      setPageCount(Math.ceil(response.resultCount / pageLimit))
       dispatch({ type: QueryAction.SET_QUERY_RESPONSE, payload: response })
     } catch (error) {
       console.log('got error trying to submit query', error)
     } finally {
       dispatch({ type: QueryAction.SET_QUERY_IN_PROGRESS, payload: false })
     }
-  }, [page, pageLimit, sheetNames, state, contextSheet])
+  }, [page, pageLimit, sheetNames, state, contextSheet, setPageCount])
 
   useEffect(() => {
     const { page: prevPage, pageLimit: prevPageLimit } = previousPage.current
@@ -101,13 +101,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
         dispatch
       } }>
         <QueryCreator />
-        <Loader
-          show={ state.queryInProgress }
-          type='bar'
-          color='primary'
-          customClass='query-in-progress'
-        />
-        <QueryResultList customClass='page-query-results' />
+        <QueryResultList />
       </QueryContext.Provider>
     </section>
   )
