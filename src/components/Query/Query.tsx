@@ -45,7 +45,7 @@ export interface QueryProps {
 function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Element {
   const sheetNames: string[] = useSelector(selectSheetNames)
   const contextSheet: SheetContext = useSelector(selectContextSheet)
-  const { page, pageLimit, setPageCount } = useContext(PaginationContext)
+  const { page, pageLimit, setPageCount = () => {} } = useContext(PaginationContext)
   const [ state, dispatch ] = useReducer(reducer, initialState)
   const filterConditions = useRef<QueryCondition[]>([])
   const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
