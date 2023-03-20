@@ -17,8 +17,10 @@ function HomePage(): JSX.Element {
           alt='sheet music with orchestra in background'
           customClass='banner-image'
         />
-        <h2>{ bannerMessage }</h2>
-        <Announcements />
+        <div id='home-text-container'>
+          <h2>{ bannerMessage }</h2>
+          <Announcements />
+        </div>
       </div>
     </div>
   )
