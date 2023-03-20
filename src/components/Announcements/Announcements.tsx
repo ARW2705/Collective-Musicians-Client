@@ -38,12 +38,12 @@ function AnnouncementsComponent(): JSX.Element {
   }, [page])
   
   return (
-    <div className={ `announcements-container importance-${ announcement?.importance }` }>
+    <section className={ `announcements-container importance-${ announcement?.importance }` }>
       <PaginationContext.Provider value={ { page, setPage, pageCount, pageLimit: 5 } }>
         <p>{ announcement?.message }</p>
         <Pagination type='pip' />
       </PaginationContext.Provider>
-    </div>
+    </section>
   )
 }
 
