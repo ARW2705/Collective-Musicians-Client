@@ -1,0 +1,19 @@
+.announcements-container {
+  border: 2px solid var(--gray);
+  background-color: var(--background-color);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.announcements-container.importance-1 {
+  background-color: var(--secondary-light);
+}
+
+.announcements-container.importance-2 {
+  background-color: var(--primary-light);
+}
+
+.announcements-container > p {
+  margin: 0;
+  min-height: 30vh;
+}
