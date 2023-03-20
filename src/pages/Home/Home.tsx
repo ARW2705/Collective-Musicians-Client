@@ -7,7 +7,7 @@ import './Home.css'
 
 
 function HomePage(): JSX.Element {
-  const bannerMessage = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Arcu vitae elementum curabitur vitae nunc sed velit dignissim sodales. Velit ut tortor pretium viverra'
+  const bannerMessage = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit'
   
   return (
     <div id='home-page' className='route'>
@@ -17,7 +17,7 @@ function HomePage(): JSX.Element {
           alt='sheet music with orchestra in background'
           customClass='banner-image'
         />
-        <p>{ bannerMessage }</p>
+        <h2>{ bannerMessage }</h2>
         <Announcements />
       </div>
     </div>
