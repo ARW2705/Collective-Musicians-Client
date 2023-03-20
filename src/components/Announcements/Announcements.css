@@ -3,6 +3,7 @@
   background-color: var(--background-color);
   border-radius: 5px;
   padding: 5px;
+  max-width: 400px;
 }
 
 .announcements-container.importance-1 {
