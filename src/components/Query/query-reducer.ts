@@ -1,15 +1,8 @@
 import { QueryAction    } from '../../actions/query'
 import { QueryResponse  } from '../../models/query-response'
+import { QueryState     } from '../../models/query-state'
 import { ReducerAction  } from '../../models/reducer-action'
 
-
-export interface QueryState {
-  selectedSheetIndex: number
-  includeColumns: string[]
-  queryResponse: QueryResponse | undefined
-  queryInProgress: boolean
-  reset: boolean
-}
 
 export type QueryPayload = number | string[] | QueryResponse | boolean | undefined
 
