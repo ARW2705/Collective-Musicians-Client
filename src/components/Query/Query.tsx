@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useReducer, useRef } from 'react'
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 
 import { QueryAction        } from '../../actions/query'
@@ -45,7 +45,9 @@ export interface QueryProps {
 function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Element {
   const sheetNames: string[] = useSelector(selectSheetNames)
   const contextSheet: SheetContext = useSelector(selectContextSheet)
-  const { page, pageLimit, setPageCount = () => {} } = useContext(PaginationContext)
+  const [ page, setPage ] = useState<number>(1)
+  const [ pageLimit, setPageLimit ] = useState<number>(5)
+  const [ pageCount, setPageCount ] = useState<number>(1)
   const [ state, dispatch ] = useReducer(reducer, initialState)
   const filterConditions = useRef<QueryCondition[]>([])
   const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
@@ -76,7 +78,9 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
         { filter: queryFilter }
       )
       console.log(response)
-      setPageCount(Math.ceil(response.resultCount / pageLimit))
+      const pageCount: number = Math.ceil(response.resultCount / pageLimit)
+      setPageCount(pageCount)
+      if (page > pageCount) setPage(pageCount)
       dispatch({ type: QueryAction.SET_QUERY_RESPONSE, payload: response })
     } catch (error) {
       console.log('got error trying to submit query', error)
@@ -92,7 +96,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   }, [page, pageLimit, submitQuery])
 
   return (
-    <section className={ `query-container ${customClass}` }>
+    <div className={ `query-container ${customClass}` }>
       <QueryContext.Provider value={ {
         sheetNames,
         filterConditions,
@@ -101,9 +105,18 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
         dispatch
       } }>
         <QueryCreator />
-        <QueryResultList />
+        <PaginationContext.Provider value={ {
+          page,
+          setPage,
+          pageLimit,
+          setPageLimit,
+          pageCount,
+          setPageCount
+        } }>
+          <QueryResultList />
+        </PaginationContext.Provider>
       </QueryContext.Provider>
-    </section>
+    </div>
   )
 }
 
