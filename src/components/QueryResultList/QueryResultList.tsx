@@ -4,6 +4,7 @@ import { QueryContext, QueryContextProps } from '../../contexts/query'
 import { QueryResult                     } from '../../models/query-result'
 
 import Loader               from '../Loaders/Loader'
+import PageLimit            from '../PageLimit/PageLimit'
 import Pagination           from '../Pagination/Pagination'
 import QueryResultComponent from '../QueryResult/QueryResult'
 
@@ -37,7 +38,13 @@ function QueryResultListComponent(): JSX.Element {
 
   return (
     <section ref={ scrollRef } className={ `query-results-container ${!queryResponse ? 'hide' : ''}` }>
-      { !!queryResponse && <Pagination /> }
+      {
+        !!queryResponse &&
+        <div className='page-bar'>
+          <Pagination />
+          <PageLimit />
+        </div>
+      }
       <Loader
         show={ queryInProgress }
         type='bar'
