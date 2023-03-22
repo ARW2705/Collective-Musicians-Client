@@ -111,6 +111,7 @@ function FilterGroupComponent({ onSubmit: handleOnSubmit, onRemove: handleOnRemo
           validators={ [required()] }
           reset={ reset }
           grid
+          optionAsTitle
         />
         <Select
           title='Condition'
@@ -120,6 +121,7 @@ function FilterGroupComponent({ onSubmit: handleOnSubmit, onRemove: handleOnRemo
           validators={ [required()] }
           reset={ reset }
           grid
+          optionAsTitle
         />
         <Input
           label='Target'
