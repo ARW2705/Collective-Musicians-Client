@@ -21,14 +21,15 @@ function QueryCreatorComponent(): JSX.Element {
   const { selectedSheetIndex } = state
   const columnNames: string[] = useSelector((rootState: RootState) => selectColumnNames(rootState, selectedSheetIndex))
   
-  if (!sheetNames) return <></>
+  if (!sheetNames || !state) return <></>
 
   return (
-    <div className='query-creator-container'>
+    <section className='query-creator-container'>
       <Select
         title='Select a Sheet'
         options={ sheetNames.map((name: string, index: number): SelectOption<number> => ({ label: name, value: index })) }
         onChange={ (sheetIndex: number[]): void => dispatch({ type: QueryAction.SET_SHEET_INDEX, payload: sheetIndex[0] }) }
+        optionAsTitle
       />
       {
         selectedSheetIndex !== -1 &&
@@ -58,7 +59,7 @@ function QueryCreatorComponent(): JSX.Element {
           </Button>
         </>
       }
-      { !!state.queryResponse?.results.length &&
+      { !!state.queryResponse?.results?.length &&
         <Button
           name='clear-query'
           onClick={ () => dispatch({ type: QueryAction.SET_QUERY_RESPONSE, payload: undefined }) }
@@ -66,7 +67,7 @@ function QueryCreatorComponent(): JSX.Element {
           Clear Query
         </Button>
       }
-    </div>
+    </section>
   )
 }
 
