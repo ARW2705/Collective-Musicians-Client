@@ -64,6 +64,7 @@ export interface SelectProps<T> {
   title: string
   defaultSelections?: number[]
   customClass?: string
+  optionAsTitle?: boolean
   multi?: boolean
   reset?: boolean
   validators?: ValidatorFn<T>[]
@@ -79,6 +80,7 @@ function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
     reset = false,
     grid = false,
     multi = false,
+    optionAsTitle = false,
     defaultSelections = [],
     onChange: handleOnChange
   } = props
@@ -120,16 +122,14 @@ function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
   }, [selected, multi, options, handleOnChange, errorState, selectAllFlag])
 
   useEffect(() => {
-    if (multi) return
-
     let newTitle: string = title
-    if (selected.length > 0) {
+    if (!multi && optionAsTitle && selected.length > 0) {
       const { label }: SelectOption<T> = options[selected[0]]
       newTitle = label
     }
 
     setDisplayTitle(newTitle)
-  }, [multi, selected, options, title])
+  }, [multi, selected, options, title, optionAsTitle])
 
   const handleClick = (targetIndex: number): void => {
     if (isNaN(targetIndex)) return
