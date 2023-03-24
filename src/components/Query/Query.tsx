@@ -1,19 +1,18 @@
 import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { QueryAction        } from '../../actions/query'
-import { PaginationContext  } from '../../contexts/pagination'
-import { QueryContext       } from '../../contexts/query'
-import { query              } from '../../http/client'
-import { QueryCondition     } from '../../models/query-condition'
-import { QueryParams        } from '../../models/query-params'
-import { QueryResponse      } from '../../models/query-response'
-import { SearchParams       } from '../../models/search-params'
-import { SheetContext       } from '../../models/sheet-context'
-import { SheetContextProps  } from '../../models/sheet-context-props'
-import { remove             } from '../../shared/remove-at'
-import { selectContextSheet } from '../../state/spreadsheet-metadata/selector'
-import { selectSheetNames   } from '../../state/spreadsheet-metadata/selector'
+import { QueryAction                         } from '../../actions/query'
+import { PaginationContext                   } from '../../contexts/pagination'
+import { QueryContext                        } from '../../contexts/query'
+import { query                               } from '../../http/client'
+import { QueryCondition                      } from '../../models/query-condition'
+import { QueryParams                         } from '../../models/query-params'
+import { QueryResponse                       } from '../../models/query-response'
+import { SearchParams                        } from '../../models/search-params'
+import { SheetContext                        } from '../../models/sheet-context'
+import { SheetContextProps                   } from '../../models/sheet-context-props'
+import { remove                              } from '../../shared/remove-at'
+import {selectContextSheet, selectSheetNames } from '../../state/spreadsheet-metadata/selector'
 
 import QueryCreator    from '../QueryCreator/QueryCreator'
 import QueryResultList from '../QueryResultList/QueryResultList'
@@ -49,7 +48,6 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   const [ pageLimit, setPageLimit ] = useState<number>(5)
   const [ pageCount, setPageCount ] = useState<number>(1)
   const [ state, dispatch ] = useReducer(reducer, initialState)
-  const filterConditions = useRef<QueryCondition[]>([])
   const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
 
   const submitQuery = useCallback(async (submit?: boolean): Promise<void> => {
@@ -68,8 +66,8 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
         includeColumns: configuredIncludeColumns
       }
 
-      if (filterConditions.current.length) {
-        queryFilter = { ...queryFilter, conditions: filterConditions.current }
+      if (state.filterConditions.length) {
+        queryFilter = { ...queryFilter, conditions: state.filterConditions }
       }
 
       const response = await query<QueryResponse>(
@@ -99,7 +97,6 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
     <div className={ `query-container ${customClass}` }>
       <QueryContext.Provider value={ {
         sheetNames,
-        filterConditions,
         submitQuery,
         state,
         dispatch
