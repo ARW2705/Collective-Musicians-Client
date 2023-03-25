@@ -1,18 +1,21 @@
 import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { QueryAction                         } from '../../actions/query'
-import { PaginationContext                   } from '../../contexts/pagination'
-import { QueryContext                        } from '../../contexts/query'
-import { query                               } from '../../http/client'
-import { QueryCondition                      } from '../../models/query-condition'
-import { QueryParams                         } from '../../models/query-params'
-import { QueryResponse                       } from '../../models/query-response'
-import { SearchParams                        } from '../../models/search-params'
-import { SheetContext                        } from '../../models/sheet-context'
-import { SheetContextProps                   } from '../../models/sheet-context-props'
-import { remove                              } from '../../shared/remove-at'
-import {selectContextSheet, selectSheetNames } from '../../state/spreadsheet-metadata/selector'
+import { QueryAction                          } from '../../actions/query'
+import { PaginationContext                    } from '../../contexts/pagination'
+import { QueryContext                         } from '../../contexts/query'
+import { SortContext                          } from '../../contexts/sort'
+import { query                                } from '../../http/client'
+import { QueryCondition                       } from '../../models/query-condition'
+import { QueryParams                          } from '../../models/query-params'
+import { QueryResponse                        } from '../../models/query-response'
+import { SearchParams                         } from '../../models/search-params'
+import { SheetContext                         } from '../../models/sheet-context'
+import { SheetContextProps                    } from '../../models/sheet-context-props'
+import { remove                               } from '../../shared/remove-at'
+import { selectColumnNames                    } from '../../state/spreadsheet-metadata/selector'
+import { RootState                            } from '../../state/store'
+import { selectContextSheet, selectSheetNames } from '../../state/spreadsheet-metadata/selector'
 
 import QueryCreator    from '../QueryCreator/QueryCreator'
 import QueryResultList from '../QueryResultList/QueryResultList'
@@ -47,8 +50,12 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   const [ page, setPage ] = useState<number>(1)
   const [ pageLimit, setPageLimit ] = useState<number>(5)
   const [ pageCount, setPageCount ] = useState<number>(1)
+  const [ sortProp, setSortProp ] = useState<string>('')
+  const [ isDescending, setIsDescending ] = useState<boolean>(true)
+  const [ sortPropOptions, setSortPropOptions ] = useState<string[]>([])
   const [ state, dispatch ] = useReducer(reducer, initialState)
   const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
+  const columnNames: string[] = useSelector((rootState: RootState) => selectColumnNames(rootState, state.selectedSheetIndex))
 
   const submitQuery = useCallback(async (submit?: boolean): Promise<void> => {
     if (!submit) return
@@ -93,6 +100,10 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
     previousPage.current = { page, pageLimit }
   }, [page, pageLimit, submitQuery])
 
+  useEffect(() => {
+    setSortPropOptions(columnNames)
+  }, [columnNames])
+
   return (
     <div className={ `query-container ${customClass}` }>
       <QueryContext.Provider value={ {
@@ -110,7 +121,15 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
           pageCount,
           setPageCount
         } }>
-          <QueryResultList />
+          <SortContext.Provider value={ {
+            sortProp,
+            setSortProp,
+            sortPropOptions,
+            isDescending,
+            setIsDescending
+          } }>
+            <QueryResultList />
+          </SortContext.Provider>
         </PaginationContext.Provider>
       </QueryContext.Provider>
     </div>
