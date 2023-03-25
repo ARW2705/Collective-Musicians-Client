@@ -7,6 +7,7 @@ import Loader               from '../Loaders/Loader'
 import PageLimit            from '../PageLimit/PageLimit'
 import Pagination           from '../Pagination/Pagination'
 import QueryResultComponent from '../QueryResult/QueryResult'
+import Sort                 from '../Sort/Sort'
 
 import './QueryResultList.css'
 
@@ -42,7 +43,10 @@ function QueryResultListComponent(): JSX.Element {
         !!queryResponse &&
         <div className='page-bar'>
           <Pagination />
-          <PageLimit />
+          <div className='half-break'>
+            <PageLimit />
+            <Sort />
+          </div>
         </div>
       }
       <Loader

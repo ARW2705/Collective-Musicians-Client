@@ -30,4 +30,11 @@
 .page-bar {
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.page-bar .half-break {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }
