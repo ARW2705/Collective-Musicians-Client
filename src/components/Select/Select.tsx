@@ -69,6 +69,7 @@ export interface SelectProps<T> {
   reset?: boolean
   validators?: ValidatorFn<T>[]
   grid?: boolean
+  scroll?: boolean
 }
 
 function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
@@ -80,6 +81,7 @@ function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
     reset = false,
     grid = false,
     multi = false,
+    scroll = false,
     optionAsTitle = false,
     defaultSelections = [],
     onChange: handleOnChange
@@ -168,7 +170,10 @@ function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
         >
           { displayTitle }
         </Button>
-        <SelectOptions onClick={ handleClick }/>
+        <SelectOptions
+          onClick={ handleClick }
+          scroll={ scroll }
+        />
         <SelectPreview show={ multi }/>
       </SelectContext.Provider>
     </div>

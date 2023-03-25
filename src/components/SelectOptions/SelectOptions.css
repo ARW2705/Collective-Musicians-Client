@@ -13,6 +13,13 @@
   top: -2px;
 }
 
+.select-options-list.scroll {
+  display: block;
+  max-height: 300px;
+  max-width: 200px;
+  overflow-y: scroll;
+}
+
 .select-option {
   list-style: none;
   padding: 10px 5px;
