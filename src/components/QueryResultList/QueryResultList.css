@@ -1,10 +1,40 @@
 .query-results-container {
-  width: 100%;
-}
-
-.query-results-content {
   border: 3px solid var(--gray-light);
   border-radius: 10px;
   padding: 10px;
   margin-top: 20px;
+  position: relative;
+}
+
+.query-loader {
+  width: 150px;
+  height: 150px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  z-index: 1;
+}
+
+.hide {
+  border: none;
+}
+
+.query-in-progress {
+  background-color: var(--gray);
+  opacity: 0.5;
+}
+
+.page-bar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.page-bar .half-break {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
 }

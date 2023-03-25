@@ -1,0 +1,17 @@
+.pagination-pip-container {
+  display: flex;
+  justify-content: center;
+}
+
+.pip {
+  width: 10px;
+  height: 10px;
+  margin: 5px;
+  fill: rgba(0, 0, 0, 0.35);
+  stroke-width: 0;
+  cursor: pointer;
+}
+
+.pip.active {
+  fill: var(--primary);
+}

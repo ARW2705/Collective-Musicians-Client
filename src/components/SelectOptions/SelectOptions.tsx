@@ -8,9 +8,10 @@ import './SelectOptions.css'
 
 export interface SelectOptionsProps {
   onClick: (index: number) => void
+  scroll: boolean
 }
 
-function SelectOptionsComponent<T>({ onClick: handleOnClick }: SelectOptionsProps): JSX.Element {
+function SelectOptionsComponent<T>({ onClick: handleOnClick, scroll }: SelectOptionsProps): JSX.Element {
   const { showList, setShowList, selected, options, selectAllFlag, grid, multi } = useContext(SelectContext)
 
   const handleClick = (event: MouseEvent<HTMLUListElement>): void => {
@@ -21,7 +22,7 @@ function SelectOptionsComponent<T>({ onClick: handleOnClick }: SelectOptionsProp
     showList
     ? (
       <ul
-        className='select-options-list'
+        className={ `select-options-list ${scroll ? 'scroll' : ''}` }
         style={ { gridTemplateColumns: `repeat(${grid ? Math.ceil(Math.sqrt(options.length)) : 1}, 1fr)` } }
         onMouseLeave={ () => setShowList(false) }
         onClick={ handleClick }

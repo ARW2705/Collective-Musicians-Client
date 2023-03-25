@@ -1,21 +1,15 @@
 import { QueryAction    } from '../../actions/query'
+import { QueryCondition } from '../../models/query-condition'
 import { QueryResponse  } from '../../models/query-response'
+import { QueryState     } from '../../models/query-state'
 import { ReducerAction  } from '../../models/reducer-action'
 
-
-export interface QueryState {
-  selectedSheetIndex: number
-  includeColumns: string[]
-  queryResponse: QueryResponse | undefined
-  queryInProgress: boolean
-  reset: boolean
-}
-
-export type QueryPayload = number | string[] | QueryResponse | boolean | undefined
+export type QueryPayload = number | string[] | QueryCondition[] | QueryResponse | boolean | undefined
 
 export const initialState: QueryState = {
   selectedSheetIndex: -1,
   includeColumns: [],
+  filterConditions: [],
   queryResponse: undefined,
   queryInProgress: false,
   reset: false
@@ -33,6 +27,8 @@ function reducer(state: QueryState, action: ReducerAction<QueryPayload, QueryAct
       }
     case QueryAction.SET_INCLUDE_COLUMNS:
       return { ...state, includeColumns: action.payload as string[] }
+    case QueryAction.SET_FILTER_CONDITIONS:
+      return { ...state, filterConditions: action.payload as QueryCondition[] }
     case QueryAction.SET_QUERY_RESPONSE:
       return {
         ...state,

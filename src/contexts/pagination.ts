@@ -4,9 +4,9 @@ export interface PaginationContextProps {
   page: number
   setPage: Dispatch<SetStateAction<number>>
   pageLimit: number
-  setPageLimit: Dispatch<SetStateAction<number>>
+  setPageLimit?: Dispatch<SetStateAction<number>>
   pageCount: number
-  setPageCount: Dispatch<SetStateAction<number>>
+  setPageCount?: Dispatch<SetStateAction<number>>
 }
 
 export const PaginationContext = createContext<PaginationContextProps>({
