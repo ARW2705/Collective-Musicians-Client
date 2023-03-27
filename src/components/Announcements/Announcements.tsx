@@ -4,6 +4,7 @@ import { PaginationContext } from '../../contexts/pagination'
 import { get               } from '../../http/client'
 import { Announcement      } from '../../models/announcement'
 
+import Loader from '../Loaders/Loader'
 import Pagination from '../Pagination/Pagination'
 
 import './Announcements.css'
@@ -39,10 +40,18 @@ function AnnouncementsComponent(): JSX.Element {
   
   return (
     <section className={ `announcements-container importance-${ announcement?.importance }` }>
-      <PaginationContext.Provider value={ { page, setPage, pageCount, pageLimit: 5 } }>
-        <p>{ announcement?.message }</p>
-        <Pagination type='pip' />
-      </PaginationContext.Provider>
+      <Loader
+        show={ !announcement }
+        type='bar'
+        color='primary'
+      />
+      {
+        !!announcement &&
+        <PaginationContext.Provider value={ { page, setPage, pageCount, pageLimit: 5 } }>
+          <p>{ announcement.message }</p>
+          <Pagination type='pip' />
+        </PaginationContext.Provider>
+      }
     </section>
   )
 }
