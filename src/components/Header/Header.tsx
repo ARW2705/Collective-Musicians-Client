@@ -2,7 +2,7 @@ import React, { memo } from 'react'
 
 import { NavLink } from '../../models/nav-link'
 
-import NavbarComponent from '../Navigation/Navbar/Navbar'
+import NavbarComponent  from '../Navigation/Navbar/Navbar'
 import NavLinkComponent from '../Navigation/NavLink/NavLink'
 
 import './Header.css'
