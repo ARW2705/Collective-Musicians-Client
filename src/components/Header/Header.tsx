@@ -25,13 +25,6 @@ function Header() {
       <NavbarComponent links={ links } />
     </header>
   )
-
-  // return (
-  //   <header id='app-header'>
-  //     <h1>Collective Musicians</h1>
-  //     <NavbarComponent links={ links } />
-  //   </header>
-  // )
 }
 
 
