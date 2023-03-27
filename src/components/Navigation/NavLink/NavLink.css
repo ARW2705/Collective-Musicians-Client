@@ -10,9 +10,12 @@
 
 .nav-link a:hover {
   color: var(--primary-light);
-  text-decoration: underline;
 }
 
 .nav-link a.active {
   color: var(--primary-light);
+}
+
+.nav-link a.active:hover {
+  text-decoration: underline;
 }
