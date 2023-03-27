@@ -12,6 +12,7 @@ import { QueryResponse                        } from '../../models/query-respons
 import { SearchParams                         } from '../../models/search-params'
 import { SheetContext                         } from '../../models/sheet-context'
 import { SheetContextProps                    } from '../../models/sheet-context-props'
+import { compare                              } from '../../shared/shallow-compare'
 import { remove                               } from '../../shared/remove-at'
 import { selectColumnNames                    } from '../../state/spreadsheet-metadata/selector'
 import { RootState                            } from '../../state/store'
@@ -56,6 +57,7 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   const [ state, dispatch ] = useReducer(reducer, initialState)
   const previousPage = useRef<{ page: Number, pageLimit: number }>({ page, pageLimit })
   const columnNames: string[] = useSelector((rootState: RootState) => selectColumnNames(rootState, state.selectedSheetIndex))
+  const previousColumnNames = useRef<string[]>(columnNames)
 
   const submitQuery = useCallback(async (submit?: boolean): Promise<void> => {
     if (!submit) return
@@ -101,7 +103,8 @@ function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Ele
   }, [page, pageLimit, submitQuery])
 
   useEffect(() => {
-    setSortPropOptions(columnNames)
+    if (!compare(columnNames, previousColumnNames.current)) setSortPropOptions(columnNames)
+    previousColumnNames.current = columnNames
   }, [columnNames])
 
   return (
