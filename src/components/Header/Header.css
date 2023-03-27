@@ -5,8 +5,8 @@
   align-items: center;
 }
 
-#app-header > h1 {
+#app-header .home-link {
   margin: 0 1%;
   color: var(--dark);
-  font-size: var(--extra-large-font-size);
+  font-size: var(--large-font-size);
 }
