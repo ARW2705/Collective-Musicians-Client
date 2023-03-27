@@ -55,7 +55,7 @@ function QueryResultComponent({ results }: QueryResultProps): JSX.Element {
         { aboveFoldElement }
         <Button
           name='toggle-accordion'
-          customClass='accordion-button'
+          customClass='details-button'
           onClick={ () => setShowAdditional(prevState => !prevState) }
           flat
         >
