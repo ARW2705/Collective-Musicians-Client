@@ -16,7 +16,10 @@ import { compare                              } from '../../shared/shallow-compa
 import { remove                               } from '../../shared/remove-at'
 import { selectColumnNames                    } from '../../state/spreadsheet-metadata/selector'
 import { RootState                            } from '../../state/store'
-import { selectContextSheet, selectSheetNames } from '../../state/spreadsheet-metadata/selector'
+import {
+  selectSpreadsheetContextSheet,
+  selectSheetNames
+}                                               from '../../state/spreadsheet-metadata/selector'
 
 import QueryCreator    from '../QueryCreator/QueryCreator'
 import QueryResultList from '../QueryResultList/QueryResultList'
@@ -47,7 +50,7 @@ export interface QueryProps {
 
 function QueryComponent({ customClass = '', searchParams }: QueryProps): JSX.Element {
   const sheetNames: string[] = useSelector(selectSheetNames)
-  const contextSheet: SheetContext = useSelector(selectContextSheet)
+  const contextSheet: SheetContext = useSelector(selectSpreadsheetContextSheet)
   const [ page, setPage ] = useState<number>(1)
   const [ pageLimit, setPageLimit ] = useState<number>(5)
   const [ pageCount, setPageCount ] = useState<number>(1)
