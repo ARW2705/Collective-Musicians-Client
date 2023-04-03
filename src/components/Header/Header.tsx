@@ -18,7 +18,7 @@ function Header() {
       <NavLinkComponent
         link={ {
           title: 'Collective Musicians',
-          route: 'home',
+          route: '/',
           customClass: 'home-link'
         } }
       />
