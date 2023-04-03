@@ -5,7 +5,7 @@ import { QueryCondition           } from '../../models/query-condition'
 import { QueryTarget              } from '../../models/query-target'
 import { SelectOption             } from '../../models/select-option'
 import { SingleQueryArgs          } from '../../models/single-query-args'
-import { FILTER_CONDITION_OPTIONS } from '../../shared/filter-condition-defs'
+import { FILTER_CONDITION_OPTIONS } from '../../shared/constants/filter-condition-defs'
 
 import Bracket from '../Bracket/Bracket'
 import Button  from '../Button/Button'
