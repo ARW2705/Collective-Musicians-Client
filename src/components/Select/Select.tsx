@@ -125,7 +125,7 @@ function SelectComponent<T>(props: SelectProps<T>): JSX.Element {
 
   useEffect(() => {
     let newTitle: string = title
-    if (!multi && optionAsTitle && selected.length > 0) {
+    if (!multi && optionAsTitle && selected.length > 0 && selected[0] >= 0 && selected[0] < options.length) {
       const { label }: SelectOption<T> = options[selected[0]]
       newTitle = label
     }
